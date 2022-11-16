@@ -1,0 +1,5 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="icon-cross-thin action-list-item-icon" width="20"  height="20" ><defs><symbol id="svg-cross-thin" viewBox="0 0 20 20" preserveAspectRatio="xMinYMin meet">
+        <path d="M18,16.547L16.545,18L10,11.455L3.455,18L2,16.547L8.545,10L2,3.455L3.455,2L10,8.546L16.545,2L18,3.455L11.455,10L18,16.547z"></path>
+      </symbol></defs>
+  <use href="#svg-cross-thin" fill="#615dfa"></use>
+</svg>

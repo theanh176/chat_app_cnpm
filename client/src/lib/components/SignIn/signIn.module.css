@@ -1,0 +1,19 @@
+.bg {
+    width: 55%;
+    min-height: 100vh;
+    background-image: url(../../../assets/images/background.jpg);
+    background-size: cover;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 1280px) {
+    .bg {
+        display: none;
+    }
+}
+
