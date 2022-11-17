@@ -26,7 +26,7 @@ import GoogleIcon from "../../../assets/images/google-icon.png";
 import CrossIcon from "../../../assets/icons/cross-circle.svg";
 
 interface IFormInput {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -35,11 +35,10 @@ const Form = () => {
     control,
     handleSubmit,
     register,
-    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -91,25 +90,25 @@ const Form = () => {
       {dataResponse?.status === 400 && <AlertError />}
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
         <Controller
-          name="email"
+          name="username"
           control={control}
           render={({ field }) => (
             <TextField
               {...field}
-              error={errors.email ? true : false}
-              helperText={errors.email?.message}
+              error={errors.username ? true : false}
+              helperText={errors.username?.message}
               variant="outlined"
-              label="Email"
-              placeholder="abc@gmail.com"
-              {...register("email", {
-                required: "Vui lòng nhập email !",
+              label="Số điện thoại"
+              placeholder="0123456789"
+              {...register("username", {
+                required: "Vui lòng nhập số điện thoại !",
                 maxLength: {
-                  value: 30,
-                  message: "Email không được quá 30 ký tự !",
+                  value: 10,
+                  message: "Số điện thoại không đúng !",
                 },
                 pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Email không đúng định dạng !",
+                  value: /^[0-9]+$/,
+                  message: "Số điện thoại không đúng !",
                 },
               })}
             />

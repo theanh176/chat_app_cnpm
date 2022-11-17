@@ -1,9 +1,9 @@
-import ManageFeed from "../feed/manageFeed";
+import Messenger from "../messenger/messenger";
 
 type Props = {};
 
 const Main = (props: Props) => {
-	return <ManageFeed />;
+	return <Messenger />;
 };
 
 export default Main;

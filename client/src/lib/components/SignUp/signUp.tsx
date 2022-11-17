@@ -30,12 +30,12 @@ import Avatar from "../../../assets/images/avatar.jpg";
 
 interface IFormInput {
   email: string;
-  first_name: string;
-  last_name: string;
+  name: string;
   gender: string;
   phone: string;
   birthday: string;
   password: string;
+  avatar: string;
 }
 
 const Form = () => {
@@ -47,12 +47,12 @@ const Form = () => {
   } = useForm({
     defaultValues: {
       email: "",
-      first_name: "",
-      last_name: "",
+      name: "",
       phone: "",
       birthday: "01/01/2022",
       gender: "",
       password: "",
+      avatar: "",
     },
   });
 
@@ -66,16 +66,19 @@ const Form = () => {
     event.preventDefault();
   };
 
-  const onSubmit = async(data: IFormInput) => {
+  const onSubmit = async (data: IFormInput) => {
     const res = await SignUpApi(data);
     console.log(res);
-    console.log('data: ', data)
-  }
+    console.log("data: ", data);
+  };
 
   const { isMobile, isDesktop } = useBreakPoint();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="px-3 grid gap-6 w-full max-w-[520px]">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="px-3 grid gap-6 w-full max-w-[520px]"
+    >
       <Controller
         name="email"
         control={control}
@@ -102,118 +105,33 @@ const Form = () => {
           />
         )}
       />
-      {isMobile && (
-        <>
-          <Controller
-            name="last_name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={errors.last_name ? true : false}
-                helperText={errors.last_name?.message}
-                className="w-full"
-                variant="outlined"
-                label="Họ"
-                placeholder="Truong Van"
-                {...register("last_name", {
-                  required: "Vui lòng nhập thông tin!",
-                  maxLength: {
-                    value: 20,
-                    message: "Không được quá 20 ký tự !",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "Không được nhập số và ký tự đặc biệt !",
-                  },
-                })}
-              />
-            )}
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            error={errors.name ? true : false}
+            helperText={errors.name?.message}
+            className="w-full"
+            variant="outlined"
+            label="Họ và Tên"
+            placeholder="Truong Van A"
+            {...register("name", {
+              required: "Vui lòng nhập thông tin!",
+              maxLength: {
+                value: 30,
+                message: "Không được quá 30 ký tự !",
+              },
+              pattern: {
+                value: /^[a-zA-Z]+$/,
+                message: "Không được nhập số và ký tự đặc biệt !",
+              },
+            })}
           />
-          <Controller
-            name="first_name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={errors.first_name ? true : false}
-                helperText={errors.first_name?.message}
-                className="w-full"
-                variant="outlined"
-                label="Tên"
-                placeholder="A"
-                {...register("first_name", {
-                  required: "Vui lòng nhập thông tin!",
-                  maxLength: {
-                    value: 20,
-                    message: "Không được quá 20 ký tự !",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "Không đúng định dạng !",
-                  },
-                })}
-              />
-            )}
-          />
-        </>
-      )}
-      {isDesktop && (
-        <div className="flex gap-2">
-          <Controller
-            name="last_name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={errors.last_name ? true : false}
-                helperText={errors.last_name?.message}
-                className="w-full"
-                variant="outlined"
-                label="Họ"
-                placeholder="Truong Van"
-                {...register("last_name", {
-                  required: "Vui lòng nhập thông tin!",
-                  maxLength: {
-                    value: 20,
-                    message: "Không được quá 20 ký tự !",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "Không đúng định dạng !",
-                  },
-                })}
-              />
-            )}
-          />
-          <Controller
-            name="first_name"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={errors.first_name ? true : false}
-                helperText={errors.first_name?.message}
-                className="w-full"
-                variant="outlined"
-                label="Tên"
-                placeholder="A"
-                {...register("first_name", {
-                  required: "Vui lòng nhập thông tin!",
-                  maxLength: {
-                    value: 20,
-                    message: "Không được quá 20 ký tự !",
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "Không đúng định dạng !",
-                  },
-                })}
-              />
-            )}
-          />
-        </div>
-      )}
+        )}
+      />
+
       <Controller
         name="birthday"
         control={control}
