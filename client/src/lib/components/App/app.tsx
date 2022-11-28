@@ -28,7 +28,7 @@ const App = (props: Props) => {
 									path={route.path}
 									element={
 										<Layout>
-											<div className="max-w-[1920] w-full">
+											<div className="w-full">
 												<Page />
 											</div>
 										</Layout>

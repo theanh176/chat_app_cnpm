@@ -1,22 +1,23 @@
 import { Box, Stack } from "@mui/material";
 import { ReactNode } from "react";
-import Footer from "../footer/footer";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import Header from "../header/header";
-import styles from "./defaultLayout.module.scss";
+import AppBar from "../Appbar/appBar";
 interface Props {
-	children?: ReactNode;
-	// any props that come into the component
+  children?: ReactNode;
+  // any props that come into the component
 }
 function DefaultLayout({ children }: Props) {
-	return (
-		<Stack minHeight="100vh" direction="column" bgcolor={"whitesmoke"}>
-			<Header />
-			<Box component="main" flexGrow={1} minWidth={360} className="pt-20">
-				{children}
-			</Box>
-			<Footer />
-		</Stack>
-	);
+  const { isMobile } = useBreakPoint();
+  return (
+    <Stack height="100vh" direction="column" bgcolor={"whitesmoke"}>
+      <Header />
+      <Box component="main" flexGrow={1} minWidth={360} className="py-[70px] md:pt-[90px] md:pb-0">
+        {children}
+      </Box>
+      {isMobile && <AppBar />}
+    </Stack>
+  );
 }
 
 export default DefaultLayout;

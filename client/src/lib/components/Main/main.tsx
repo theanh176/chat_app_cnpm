@@ -1,9 +1,21 @@
-import Messenger from "../messenger/messenger";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-type Props = {};
+import Home from "../Home/home";
 
-const Main = (props: Props) => {
-	return <Messenger />;
+import { isSignIn } from "../../../api/isSignIn";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
+
+const Main = () => {
+  const navigate = useNavigate();
+
+  const { isMobile } = useBreakPoint();
+
+  useEffect(() => {
+    !isSignIn() && navigate("/sign-in");
+  }, [navigate]);
+  
+  return <Home />
 };
 
 export default Main;

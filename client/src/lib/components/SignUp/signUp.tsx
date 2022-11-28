@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { Link } from "react-router-dom";
 import { SignUpApi } from "../../../api/signUpApi";
 import styles from "./signUp.module.css";
 import {
@@ -26,7 +25,6 @@ import Visibility from "../../../assets/icons/visibility.svg";
 import VisibilityOff from "../../../assets/icons/visibility-off.svg";
 import FacebookIcon from "../../../assets/images/facebook-icon.png";
 import GoogleIcon from "../../../assets/images/google-icon.png";
-import Avatar from "../../../assets/images/avatar.jpg";
 
 interface IFormInput {
   email: string;
@@ -71,8 +69,6 @@ const Form = () => {
     console.log(res);
     console.log("data: ", data);
   };
-
-  const { isMobile, isDesktop } = useBreakPoint();
 
   return (
     <form
@@ -247,6 +243,9 @@ const Form = () => {
           </FormControl>
         )}
       />
+      <div>
+      
+      </div>
       <div className="pb-5 md:mt-5">
         <Button type="submit" variant="contained" className="w-full">
           <p className="md:text-base">ĐĂNG KÍ TÀI KHOẢN</p>
@@ -257,8 +256,6 @@ const Form = () => {
 };
 
 export default function SignUp() {
-  const { isMobile, isDesktop } = useBreakPoint();
-
   return (
     <div className="flex">
       <div className={styles.bg}>

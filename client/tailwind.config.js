@@ -21,9 +21,11 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: "#23d2e2",
+          DEFAULT: "#1d9bf0",
           hover: "#1bc5d4",
           light: "#41efff",
+          wash: '#E4E6EB',
+          icon: '#23d2e2'
         },
         secondary: {
           DEFAULT: "#615dfa",
@@ -37,7 +39,7 @@ module.exports = {
         error: "#fd4350"
       },
       backgroundImage: {
-        'banner': "url('/src/assets/images/banner-bg.png')",
+        'banner': "url('/src/assets/images/bg-default.png')",
       }
     },
   },

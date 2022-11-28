@@ -2,7 +2,7 @@ export const COLORFIELD = {
 	black: "#1c2437",
 	white: "#ffffff",
 	primary: "#23d2e2",
-	secondary: "#615dfa",
+	secondary: "#1d9bf0",
 	success: "#41756C",
 	error: "#C51C1C",
 	primary__hover: "#1bc5d4",

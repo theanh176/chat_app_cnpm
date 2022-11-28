@@ -16,6 +16,7 @@ const themeOptions = createTheme({
           boxShadow: "none",
           paddingTop: "12px",
           paddingBottom: "12px",
+          borderWidth: '0',
           "&:hover": {
             backgroundColor: COLORFIELD.secondary__hover,
           },
@@ -39,24 +40,23 @@ const themeOptions = createTheme({
     MuiTab: {
       styleOverrides: {
         root: {
-          paddingTop: "30px",
-          paddingBottom: "30px",
-          width: "50%",
           opacity: 0.4,
+          color: "#23d2e2",
+          padding: "20px 80px",
           "&.Mui-selected": {
             opacity: 1,
+            color: COLORFIELD.primary,
           },
-          fontSize: "18px",
-          fontWeight: "500",
+          fontWeight: "700",
         },
       },
     },
     MuiTabs: {
       styleOverrides: {
         indicator: {
-          backgroundColor: COLORFIELD.primary,
-          height: "4px",
-          borderRadius: "2px",
+          height: "8px",
+          borderRadius: "4px",
+          backgroundColor: '#fff',
         },
       },
     },
@@ -66,7 +66,14 @@ const themeOptions = createTheme({
           color: COLORFIELD.error,
         },
       },
-    }
+    },
+    MuiTabPanel: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
   },
 });
 
