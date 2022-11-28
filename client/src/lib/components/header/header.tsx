@@ -10,6 +10,8 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Diversity3RoundedIcon from "@mui/icons-material/Diversity3Rounded";
 
+import { Link } from "react-router-dom";
+
 type Props = {};
 
 const Header = ({}: Props) => {
@@ -46,39 +48,42 @@ const Header = ({}: Props) => {
           },
         }}
       >
-        <Tab
-          icon={
-            <HomeRoundedIcon
-              fontSize="large"
-              classes={{
-                root: "text-white",
-              }}
-            />
-          }
-          href="/"
-        />
-        <Tab
-          icon={
-            <Diversity3RoundedIcon
-              fontSize="large"
-              classes={{
-                root: "text-white",
-              }}
-            />
-          }
-          href="/friends?tab=0"
-        />
-        <Tab
-          icon={
-            <PersonRoundedIcon
-              fontSize="large"
-              classes={{
-                root: "text-white",
-              }}
-            />
-          }
-          href="/user"
-        />
+        <Link to={"/"}>
+          <Tab
+            icon={
+              <HomeRoundedIcon
+                fontSize="large"
+                classes={{
+                  root: "text-white",
+                }}
+              />
+            }
+          />
+        </Link>
+        <Link to={"/friends?tab=0"}>
+          <Tab
+            icon={
+              <Diversity3RoundedIcon
+                fontSize="large"
+                classes={{
+                  root: "text-white",
+                }}
+              />
+            }
+          />
+        </Link>
+        <Link to={"/user"}>
+          <Tab
+            icon={
+              <PersonRoundedIcon
+                fontSize="large"
+                classes={{
+                  root: "text-white",
+                }}
+              />
+            }
+          />
+        </Link>
       </Tabs>
     );
   };
