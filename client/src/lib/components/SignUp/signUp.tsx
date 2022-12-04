@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { SignUpApi } from "../../../api/signUpApi";
+import { isSignIn } from "../../../api/authApi";
+import useSignUp from "./useSignUp";
 import styles from "./signUp.module.css";
 import {
   Button,
@@ -17,8 +18,11 @@ import {
 } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { COLORFIELD } from "../../../helper/const";
 import HeaderForm from "../header/headerForm";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../Loading/loading";
+import { isLoadingShow } from "../../../store";
 
 import Logo from "../../../assets/images/logo.png";
 import Visibility from "../../../assets/icons/visibility.svg";
@@ -33,7 +37,6 @@ interface IFormInput {
   phone: string;
   birthday: string;
   password: string;
-  avatar: string;
 }
 
 const Form = () => {
@@ -50,29 +53,39 @@ const Form = () => {
       birthday: "01/01/2022",
       gender: "",
       password: "",
-      avatar: "",
     },
   });
 
-  const [isShow, setIsShow] = useState(false);
+  const { isLoading, handleSubmitForm } = useSignUp();
 
+  //toggle loading
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(isLoadingShow(true));
+    } else {
+      dispatch(isLoadingShow(false));
+    }
+  }, [isLoading, dispatch]);
+
+  //toggle show password
+  const [isShow, setIsShow] = useState(false);
   const handleClickShowPassword = () => {
     setIsShow(!isShow);
   };
-
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
 
-  const onSubmit = async (data: IFormInput) => {
-    const res = await SignUpApi(data);
-    console.log(res);
-    console.log("data: ", data);
-  };
+  //action after sigup success
+  const navigate = useNavigate();
+  useEffect(() => {
+    isSignIn() && navigate("/");
+  }, [navigate]);
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleSubmitForm)}
       className="px-3 grid gap-6 w-full max-w-[520px]"
     >
       <Controller
@@ -118,10 +131,6 @@ const Form = () => {
               maxLength: {
                 value: 30,
                 message: "Không được quá 30 ký tự !",
-              },
-              pattern: {
-                value: /^[a-zA-Z]+$/,
-                message: "Không được nhập số và ký tự đặc biệt !",
               },
             })}
           />
@@ -243,9 +252,7 @@ const Form = () => {
           </FormControl>
         )}
       />
-      <div>
-      
-      </div>
+      <div></div>
       <div className="pb-5 md:mt-5">
         <Button type="submit" variant="contained" className="w-full">
           <p className="md:text-base">ĐĂNG KÍ TÀI KHOẢN</p>
@@ -254,34 +261,41 @@ const Form = () => {
     </form>
   );
 };
-
-export default function SignUp() {
+const SignUp = () => {
+  const isLoadingShow = useSelector(
+    (state: any) => state.isLoadingShow.isLoadingShow
+  );
   return (
-    <div className="flex">
-      <div className={styles.bg}>
-        <p className="text-2xl font-medium">CHÀO MỪNG ĐẾN VỚI</p>
-        <h1 className="text-[44px] font-black">HỌC SIÊU DỄ - EASY LEARN</h1>
-      </div>
-      <div className="w-full px-4 min-h-screen flex flex-col justify-center items-center relative xl:w-[45%] md:pt-10">
-        <HeaderForm
-          linkLeft="/"
-          linkRight="/sign-in"
-          textLeft="Trang Chủ"
-          textRight="Đăng Nhập"
-        />
-        <img src={Logo} alt="Logo" className="w-[150px] mt-10" />
-        <p className="text-2xl font-bold my-5">ĐĂNG KÝ</p>
-        <Form />
-        <p className="font-bold text-sm md:text-base">ĐĂNG KÝ BẰNG: </p>
-        <div className="flex gap-5 pt-3 justify-center">
-          <IconButton href="/facebook">
-            <img src={FacebookIcon} alt="Facebook" className="w-10" />
-          </IconButton>
-          <IconButton href="/google">
-            <img src={GoogleIcon} alt="Google" className="w-10" />
-          </IconButton>
+    <>
+      {isLoadingShow && <Loading />}
+      <div className="flex">
+        <div className={styles.bg}>
+          <p className="text-2xl font-medium">CHÀO MỪNG ĐẾN VỚI</p>
+          <h1 className="text-[44px] font-black">HỌC SIÊU DỄ - EASY LEARN</h1>
+        </div>
+        <div className="w-full px-4 min-h-screen flex flex-col justify-center items-center relative xl:w-[45%] md:pt-10">
+          <HeaderForm
+            linkLeft="/"
+            linkRight="/sign-in"
+            textLeft="Trang Chủ"
+            textRight="Đăng Nhập"
+          />
+          <img src={Logo} alt="Logo" className="w-[150px] mt-10" />
+          <p className="text-2xl font-bold my-5">ĐĂNG KÝ</p>
+          <Form />
+          <p className="font-bold text-sm md:text-base">ĐĂNG KÝ BẰNG: </p>
+          <div className="flex gap-5 pt-3 justify-center">
+            <IconButton href="/facebook">
+              <img src={FacebookIcon} alt="Facebook" className="w-10" />
+            </IconButton>
+            <IconButton href="/google">
+              <img src={GoogleIcon} alt="Google" className="w-10" />
+            </IconButton>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
-}
+};
+
+export default SignUp;

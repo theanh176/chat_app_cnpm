@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import Logo from "../../../assets/images/logo.png";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
@@ -36,6 +37,9 @@ const Header = ({}: Props) => {
       setValue(newValue);
     };
 
+    const navigate = useNavigate();
+
+
     return (
       <Tabs
         value={value}
@@ -55,7 +59,8 @@ const Header = ({}: Props) => {
               }}
             />
           }
-          href="/"
+          to='/' 
+          component={Link}
         />
         <Tab
           icon={
@@ -66,7 +71,8 @@ const Header = ({}: Props) => {
               }}
             />
           }
-          href="/friends?tab=0"
+          to='/friends?tab=0' 
+          component={Link}
         />
         <Tab
           icon={
@@ -77,7 +83,8 @@ const Header = ({}: Props) => {
               }}
             />
           }
-          href="/user"
+          to='/user' 
+          component={Link}
         />
       </Tabs>
     );
