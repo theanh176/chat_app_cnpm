@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import Logo from "../../../assets/images/logo.png";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Diversity3RoundedIcon from "@mui/icons-material/Diversity3Rounded";
-
-import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -38,6 +37,9 @@ const Header = ({}: Props) => {
       setValue(newValue);
     };
 
+    const navigate = useNavigate();
+
+
     return (
       <Tabs
         value={value}
@@ -48,42 +50,42 @@ const Header = ({}: Props) => {
           },
         }}
       >
-        <Link to={"/"}>
-          <Tab
-            icon={
-              <HomeRoundedIcon
-                fontSize="large"
-                classes={{
-                  root: "text-white",
-                }}
-              />
-            }
-          />
-        </Link>
-        <Link to={"/friends?tab=0"}>
-          <Tab
-            icon={
-              <Diversity3RoundedIcon
-                fontSize="large"
-                classes={{
-                  root: "text-white",
-                }}
-              />
-            }
-          />
-        </Link>
-        <Link to={"/user"}>
-          <Tab
-            icon={
-              <PersonRoundedIcon
-                fontSize="large"
-                classes={{
-                  root: "text-white",
-                }}
-              />
-            }
-          />
-        </Link>
+        <Tab
+          icon={
+            <HomeRoundedIcon
+              fontSize="large"
+              classes={{
+                root: "text-white",
+              }}
+            />
+          }
+          to='/' 
+          component={Link}
+        />
+        <Tab
+          icon={
+            <Diversity3RoundedIcon
+              fontSize="large"
+              classes={{
+                root: "text-white",
+              }}
+            />
+          }
+          to='/friends?tab=0' 
+          component={Link}
+        />
+        <Tab
+          icon={
+            <PersonRoundedIcon
+              fontSize="large"
+              classes={{
+                root: "text-white",
+              }}
+            />
+          }
+          to='/user' 
+          component={Link}
+        />
       </Tabs>
     );
   };

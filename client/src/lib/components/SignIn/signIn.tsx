@@ -16,7 +16,10 @@ import { Link } from "react-router-dom";
 import styles from "./signIn.module.css";
 import { COLORFIELD } from "../../../helper/const";
 import HeaderForm from "../header/headerForm";
-import { SignInApi } from "../../../api/signInApi";
+import { isLoadingShow } from "../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import useSignIn from "./useSignIn";
+import Loading from "../Loading/loading";
 
 import Logo from "../../../assets/images/logo.png";
 import Visibility from "../../../assets/icons/visibility.svg";
@@ -43,35 +46,41 @@ const Form = () => {
     },
   });
 
+  const { loginRes, isLoading, error, handleSubmitForm } = useSignIn();
+
+  const dispatch = useDispatch();
+
+  //toggle loading
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(isLoadingShow(true));
+    } else {
+      dispatch(isLoadingShow(false));
+    }
+  }, [isLoading, dispatch]);
+
+  //check remember me
   const [isCheck, setIsCheck] = useState(false);
   const handleCheckRemember = () => {
     setIsCheck(!isCheck);
   };
 
+  //toggle show password
   const [isShow, setIsShow] = useState(false);
-
   const handleClickShowPassword = () => {
     setIsShow(!isShow);
   };
-
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
-  // Catch data response when submit form
-  const [dataResponse, setDataResponse] = useState<any>(null);
 
-  const onSubmit = async (data: IFormInput) => {
-    const res = await SignInApi(data);
-    setDataResponse(res);
-  };
-
+  //action after login success
   const navigate = useNavigate();
-
   useEffect(() => {
-    if (dataResponse?.status === 200) {
+    if (loginRes?.status === 200) {
       navigate("/");
     }
-  }, [dataResponse, navigate]);
+  }, [loginRes, navigate]);
 
   const AlertError = () => {
     return (
@@ -87,8 +96,8 @@ const Form = () => {
 
   return (
     <div className="w-full max-w-[520px]">
-      {dataResponse?.status === 400 && <AlertError />}
-      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
+      {loginRes?.status === 400 && <AlertError />}
+      <form onSubmit={handleSubmit(handleSubmitForm)} className="grid gap-6">
         <Controller
           name="username"
           control={control}
@@ -127,11 +136,6 @@ const Form = () => {
                   value: 20,
                   message: "Không được quá 20 ký tự !",
                 },
-                // pattern: {
-                //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                //   message:
-                //     "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số!",
-                // },
               })}
             >
               <InputLabel htmlFor="password">Mật Khẩu</InputLabel>
@@ -175,40 +179,48 @@ const Form = () => {
   );
 };
 
-export default function SignIn() {
+const SignIn = () => {
+  const isLoadingShow = useSelector(
+    (state: any) => state.isLoadingShow.isLoadingShow
+  );
   return (
-    <div className="flex">
-      <div className={styles.bg}>
-        <p className="text-2xl font-medium">CHÀO MỪNG ĐẾN VỚI</p>
-        <h1 className="text-[44px] font-black">HỌC SIÊU DỄ - EASY LEARN</h1>
-      </div>
-      <div className="w-full px-4 min-h-screen xl:w-[45%] flex flex-col justify-center items-center relative">
-        <HeaderForm
-          linkLeft="/"
-          linkRight="/sign-up"
-          textLeft="Trang Chủ"
-          textRight="Đăng Kí"
-        />
-        <img src={Logo} alt="Logo" className="w-[150px]" />
-        <p className="text-2xl font-bold mt-5 mb-5">Xin Chào!</p>
-        <Form />
-        <p
-          className={`text-sm font-bold text-[${COLORFIELD.black}}] md:text-base`}
-        >
-          <Link to="/forgot-password">Quên mật khẩu?</Link>
-        </p>
-        <div className="mt-5">
-          <p className="font-bold text-sm md:text-base">ĐĂNG NHẬP BẰNG: </p>
-          <div className="flex gap-5 pt-3 justify-center">
-            <IconButton href="/facebook">
-              <img src={FacebookIcon} alt="Facebook" className="w-10" />
-            </IconButton>
-            <IconButton href="/google">
-              <img src={GoogleIcon} alt="Google" className="w-10" />
-            </IconButton>
+    <>
+      {isLoadingShow && <Loading />}
+      <div className="flex">
+        <div className={styles.bg}>
+          <p className="text-2xl font-medium">CHÀO MỪNG ĐẾN VỚI</p>
+          <h1 className="text-[44px] font-black">HỌC SIÊU DỄ - EASY LEARN</h1>
+        </div>
+        <div className="w-full px-4 min-h-screen xl:w-[45%] flex flex-col justify-center items-center relative">
+          <HeaderForm
+            linkLeft="/"
+            linkRight="/sign-up"
+            textLeft="Trang Chủ"
+            textRight="Đăng Kí"
+          />
+          <img src={Logo} alt="Logo" className="w-[150px]" />
+          <p className="text-2xl font-bold mt-5 mb-5">Xin Chào!</p>
+          <Form />
+          <p
+            className={`text-sm font-bold text-[${COLORFIELD.black}}] md:text-base`}
+          >
+            <Link to="/forgot-password">Quên mật khẩu?</Link>
+          </p>
+          <div className="mt-5">
+            <p className="font-bold text-sm md:text-base">ĐĂNG NHẬP BẰNG: </p>
+            <div className="flex gap-5 pt-3 justify-center">
+              <IconButton href="/facebook">
+                <img src={FacebookIcon} alt="Facebook" className="w-10" />
+              </IconButton>
+              <IconButton href="/google">
+                <img src={GoogleIcon} alt="Google" className="w-10" />
+              </IconButton>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
+export default SignIn;

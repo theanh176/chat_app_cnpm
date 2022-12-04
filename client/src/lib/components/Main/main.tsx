@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Home from "../Home/home";
 
-import { isSignIn } from "../../../api/isSignIn";
+import { isSignIn } from "../../../api/authApi";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
 
 const Main = () => {
