@@ -32,3 +32,22 @@ export const isSignIn = () => {
 export const SignOutApi = () => {
   Cookies.remove("access_token");
 };
+
+// Đổi mật khẩu
+export const ChangePasswordApi = async (data) => {
+  // get the access token from the cookie
+  const access_token = Cookies.get("access_token");
+  // set the authorization header
+  const options = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+  try {
+    console.log(options,data);
+    const response = await request.patch(`auth/changepass`, data, options);
+    return response;
+  } catch (error) {
+    return error?.response;
+  }
+}

@@ -1,34 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { isSignIn } from "../../../api/authApi";
-import useSignUp from "./useSignUp";
-import styles from "./signUp.module.css";
 import {
-  Button,
-  TextField,
-  InputAdornment,
-  OutlinedInput,
-  IconButton,
-  InputLabel,
-  FormControl,
-  Select,
-  MenuItem,
-  FormHelperText,
+  Button, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField
 } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import HeaderForm from "../header/headerForm";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../Loading/loading";
+import { useNavigate } from "react-router-dom";
+import { isSignIn } from "../../../api/authApi";
 import { isLoadingShow } from "../../../store";
+import HeaderForm from "../header/headerForm";
+import Loading from "../Loading/loading";
+import styles from "./signUp.module.css";
+import useSignUp from "./useSignUp";
 
-import Logo from "../../../assets/images/logo.png";
-import Visibility from "../../../assets/icons/visibility.svg";
 import VisibilityOff from "../../../assets/icons/visibility-off.svg";
+import Visibility from "../../../assets/icons/visibility.svg";
 import FacebookIcon from "../../../assets/images/facebook-icon.png";
 import GoogleIcon from "../../../assets/images/google-icon.png";
+import Logo from "../../../assets/images/logo.png";
 
 interface IFormInput {
   email: string;

@@ -13,6 +13,10 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import PasswordRoundedIcon from "@mui/icons-material/PasswordRounded";
 
+
+import { useDispatch, useSelector } from "react-redux";
+import { isChangePass } from "../../../store";
+
 interface UserState {
   dataUser: {
     name: string;
@@ -30,6 +34,11 @@ interface UserState {
 const User = () => {
   const navigate = useNavigate();
 
+  
+  const { isChangePass: isChangePassState } = useSelector(
+    (state: any) => state.isChangePass
+  );
+
   useEffect(() => {
     !isSignIn() && navigate("/sign-in");
   }, [navigate]);
@@ -39,9 +48,6 @@ const User = () => {
   const formatDays = (day: any) => {
     return dayjs(day).format("DD/MM/YYYY");
   };
-
-  // Change password
-  const [isChangePass, setIsChangePass] = useState(false);
 
   const HeaderUser = () => {
     return (
@@ -63,6 +69,11 @@ const User = () => {
   };
 
   const BodyUser = () => {
+    const dispatch = useDispatch();
+
+    const handleClickChangePass = () => {
+      dispatch(isChangePass());
+    }
     return (
       <div className="px-4 md:px-[160px]">
         <p className="font-bold md:text-2xl">Profile</p>
@@ -101,7 +112,7 @@ const User = () => {
           </Button>
           <Button className="w-full">
             <PasswordRoundedIcon />
-            <p className="ml-1" onClick={() => setIsChangePass(true)}>
+            <p className="ml-1" onClick={handleClickChangePass}>
               Change Password
             </p>
           </Button>
@@ -136,7 +147,7 @@ const User = () => {
   return (
     <>
       {isLoading && <Loading />}
-      <ChangePass isShow={isChangePass} />
+      <ChangePass isShow={isChangePassState} />
       <div className="bg-white relative rounded-xl h-[calc(100vh-140px)] max-w-[900px] mx-auto md:h-[calc(100vh-100px)]">
         <HeaderUser />
         <BodyUser />
