@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useMutation } from "react-query";
 import { ChangePasswordApi } from "../../../api/authApi";
 

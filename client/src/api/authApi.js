@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 export const SignInApi = async (data) => {
   try {
-    const response = await request.post("auth/login/", data);
+    const response = await request.post("/auth/login/", data);
     response?.data && Cookies.set("access_token", response?.data?.access_token);
     return response;
   } catch (error) {
@@ -13,7 +13,7 @@ export const SignInApi = async (data) => {
 
 export const SignUpApi = async (data) => {
   try {
-    const response = await request.post("auth/register/", data);
+    const response = await request.post("/auth/register/", data);
     response?.data && Cookies.set("access_token", response?.data?.access_token);
     return response;
   } catch (error) {
@@ -45,7 +45,7 @@ export const ChangePasswordApi = async (data) => {
   };
   try {
     console.log(options,data);
-    const response = await request.patch(`auth/changepass`, data, options);
+    const response = await request.patch(`/auth/changepass`, data, options);
     return response;
   } catch (error) {
     return error?.response;

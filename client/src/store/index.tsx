@@ -5,6 +5,7 @@ const initialState = {
 	userInfor: {},
 	isLoadingShow: false,
 	isChangePass: false,
+	isChangeProfile: false,
 };
 
 const showInfoSlice = createSlice({
@@ -37,16 +38,28 @@ const isChangePassSlice = createSlice({
 	},
 });
 
+const isChangeProfileSlice = createSlice({
+	name: "isChangeProfile",
+	initialState,
+	reducers: {
+		isChangeProfile: (state) => {
+			state.isChangeProfile = !state.isChangeProfile;
+		}
+	},
+})
+
 const store = configureStore({
 	reducer: {
 		isShowInfo: showInfoSlice.reducer,
 		isLoadingShow: isLoadingShowSlice.reducer,
 		isChangePass: isChangePassSlice.reducer,
+		isChangeProfile: isChangeProfileSlice.reducer,
 	},
 });
 
 export const { toggleInfo } = showInfoSlice.actions;
 export const { isLoadingShow } = isLoadingShowSlice.actions;
 export const { isChangePass } = isChangePassSlice.actions;
+export const { isChangeProfile } = isChangeProfileSlice.actions;
 
 export default store;

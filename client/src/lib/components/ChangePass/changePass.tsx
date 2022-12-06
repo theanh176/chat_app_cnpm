@@ -5,13 +5,13 @@ import {
 	IconButton,
 	InputAdornment,
 	InputLabel,
-	OutlinedInput,
+	OutlinedInput
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import Swal from "sweetalert2";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import styles from "./changePass.module.css";
 
 import VisibilityOff from "../../../assets/icons/visibility-off.svg";
@@ -80,6 +80,7 @@ const Form = () => {
 	const [isShowNewPass, setIsShowNewPass] = useState(false);
 
 	return (
+		// eslint-disable-next-line no-useless-concat
 		<div className={styles.hide + " " + "w-full max-w-[520px] mt-10"}>
 			<form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
 				<Controller
