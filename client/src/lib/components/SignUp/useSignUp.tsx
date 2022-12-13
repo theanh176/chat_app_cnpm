@@ -13,7 +13,6 @@ interface IFormInput {
 }
 
 const useSignUp = () => {
-  const dispatch = useDispatch();
   const {
     data: signUpRes,
     isLoading,

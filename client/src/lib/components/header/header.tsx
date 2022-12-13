@@ -11,9 +11,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Diversity3RoundedIcon from "@mui/icons-material/Diversity3Rounded";
 
-type Props = {};
-
-const Header = ({}: Props) => {
+const Header = () => {
   const {isDesktop} = useBreakPoint();
   const location = useLocation();
 
@@ -91,7 +89,7 @@ const Header = ({}: Props) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-14 bg-primary text-white flex justify-center z-50 rounded-b-xl md:justify-between md:h-20">
+    <div className="fixed top-0 left-0 right-0 h-14 bg-primary text-white flex justify-center z-50  rounded-b-xl md:justify-between md:h-20">
       <img src={Logo} alt="logo" className="w-14 md:w-20 md:ml-10" />
       {/* <div className="flex gap-10">
         <IconButton

@@ -1,46 +1,49 @@
-import React from "react";
-
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { TextField, IconButton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { TextField, Button, IconButton } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toggleInfo } from "../../../store";
+import useBoxChat from "./useBoxChat";
+import Loading from "../Loading/loading";
+import useSendMess from "./useSendMess";
 
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import CollectionsRoundedIcon from "@mui/icons-material/CollectionsRounded";
-import SentimentVerySatisfiedRoundedIcon from "@mui/icons-material/SentimentVerySatisfiedRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
-
-type Props = {};
-
 interface IFormInput {
   content: string;
 }
 
 interface IMessage {
+  isuser: boolean;
+  content: string;
+  createdAt: string;
+}
+
+interface IBoxMess {
   user: string;
   content: string;
   createdAt: string;
 }
 
-const FormChat = ({}: Props) => {
+const FormChat = () => {
   const { isMobile } = useBreakPoint();
+  const { id } = useParams();
+  const { handleSendMessage } = useSendMess();
   const { control, handleSubmit } = useForm({
     defaultValues: {
       content: "",
+      file: "",
+      id: id
     },
-  });
-
-  const onSubmit = (data: IFormInput) => {
-    console.log(data);
-  };
+  });  
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleSendMessage)}
       className="flex w-full items-center md:gap-4"
     >
       <Controller
@@ -75,7 +78,7 @@ const FormChat = ({}: Props) => {
   );
 };
 
-const ItemMess = ({ user, content, createdAt }: IMessage) => {
+const ItemMess = ({ isuser, content, createdAt }: IMessage) => {
   const ItemLeft = () => {
     return (
       <div className="flex items-center my-[2px] gap-1 md:gap-2 md:my-1">
@@ -106,15 +109,34 @@ const ItemMess = ({ user, content, createdAt }: IMessage) => {
     );
   };
 
-  return user === "1" ? <ItemLeft /> : <ItemRight />;
+  return isuser ? <ItemRight /> : <ItemLeft />;
 };
 
-const BoxMess = ({}: Props) => {
-  const { isMobile, isDesktop } = useBreakPoint();
+const BoxMess = () => {
+  const { isMobile } = useBreakPoint();
 
   const navigate = useNavigate();
 
+  const { id } = useParams();
+
   const dispatch = useDispatch();
+
+  const { infoChannelData, loadingInfoChannel, messageData, loadingMessage } =
+    useBoxChat(id ? id : "");
+  const ListUserOnChannel = infoChannelData?.data?.user;
+
+  //get data in sessionStorage
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+
+  //get info partner
+  const infoParner = ListUserOnChannel?.filter(
+    (item: any) => item._id !== user?.user?._id
+  );
+
+  //check is user
+  const handleIsUser = (idCheck: string) => {
+    return idCheck === user?.user?._id;
+  };
 
   const HeaderBox = () => {
     const handleBack = () => {
@@ -127,6 +149,7 @@ const BoxMess = ({}: Props) => {
 
     return (
       <div className="flex justify-between pb-3 border-b md:pb-4">
+        {loadingInfoChannel && <Loading />}
         <div className="flex gap-2 items-center">
           {isMobile && (
             <IconButton onClick={handleBack}>
@@ -134,11 +157,17 @@ const BoxMess = ({}: Props) => {
             </IconButton>
           )}
           <img
-            src={AvatarDefaultIcon}
+            src={
+              ListUserOnChannel?.length === 2
+                ? infoParner[0]?.avatar
+                : AvatarDefaultIcon
+            }
             alt="avatar"
             className="w-10 h-10 rounded-full md:w-14 md:h-14"
           />
-          <p className="font-bold md:text-xl">Your Name</p>
+          <p className="font-bold md:text-xl">
+            {ListUserOnChannel?.length === 2 ? infoParner[0]?.name : "Nhóm"}
+          </p>
         </div>
         <IconButton>
           <InfoRoundedIcon
@@ -155,31 +184,16 @@ const BoxMess = ({}: Props) => {
 
   const ChatArea = () => {
     return (
-      <div className="h-full overflow-scroll">
-        <ItemMess
-          user="1"
-          content="1 Copy paste data relevant to your system into the training data box more text will produce more realistic results 2 Choose how many words of nonsensical but real-looking text you need "
-          createdAt="12:00"
-        />
-        <ItemMess user="0" content="Hello" createdAt="12:00" />
-        <ItemMess user="1" content="Hello" createdAt="12:00" />
-        <ItemMess user="1" content="Hello" createdAt="12:00" />
-        <ItemMess user="1" content="Hello" createdAt="12:00" />
-        <ItemMess
-          user="0"
-          content="1 Copy paste data relevant to your system into the training data box more text will produce more realistic results 2 Choose how many words of nonsensical but real-looking text you need "
-          createdAt="12:00"
-        />
-        <ItemMess
-          user="0"
-          content="1 Copy paste data relevant to your system into the training data box more text will produce more realistic results 2 Choose how many words of nonsensical but real-looking text you need "
-          createdAt="12:00"
-        />
-        <ItemMess
-          user="0"
-          content="1 Copy paste data relevant to your system into the training data box more text will produce more realistic results 2 Choose how many words of nonsensical but real-looking text you need "
-          createdAt="12:00"
-        />
+      <div className="h-full overflow-y-scroll">
+        {loadingMessage && <Loading />}
+        {messageData?.data?.map((item: IBoxMess, index: number) => (
+          <ItemMess
+            key={index}
+            isuser={handleIsUser(item?.user)}
+            content={item.content}
+            createdAt={item.createdAt}
+          />
+        ))}
       </div>
     );
   };
@@ -187,21 +201,13 @@ const BoxMess = ({}: Props) => {
   const BottomBox = () => {
     return (
       <div className="flex items-center border-t pt-3 md:pt-4 md:gap-4">
-        <IconButton>
-          <CollectionsRoundedIcon
-            classes={{
-              root: "text-primary",
-            }}
-            fontSize={isMobile ? "medium" : "large"}
-          />
-        </IconButton>
         <FormChat />
       </div>
     );
   };
 
   return (
-    <div className="bg-white grid grid-rows-[auto,1fr,auto] rounded-xl p-4 h-[calc(100vh-140px)] md:h-[calc(100vh-100px)] md:mr-4">
+    <div className="bg-white grid grid-rows-[auto,1fr,auto] w-full rounded-xl p-4 h-[calc(100vh-140px)] md:h-[calc(100vh-100px)] md:mr-4">
       <HeaderBox />
       <ChatArea />
       <BottomBox />

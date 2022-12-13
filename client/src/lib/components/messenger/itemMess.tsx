@@ -3,31 +3,37 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 
-interface IMess{
-  avatar: string;
-  name: string;
-  id: string;
+interface IMess {
+  item: {
+    avatar: string;
+    name: string;
+    _id: string;
+  };
 }
 
-const ItemMess = ({ avatar, name, id }: IMess) => {
+const ItemMess = ({ item }: IMess) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/messenger/${id}`);
-  }
+    navigate(`/messenger/${item._id}`);
+  };
 
   return (
-    <div className="py-2 border-t flex items-center justify-between cursor-pointer md:py-4" onClick={handleClick} aria-hidden='true'>
+    <div
+      className="py-2 border-t flex items-center justify-between cursor-pointer md:py-4"
+      onClick={handleClick}
+      aria-hidden="true"
+    >
       <div className="flex items-center gap-3 md:gap-4">
         <img
-          src={AvatarDefaultIcon}
+          src={item.avatar ? item.avatar : AvatarDefaultIcon}
           alt="Avatar"
           className="w-12 aspect-square rounded-full md:w-16"
         />
-        <p className="font-bold md:text-lg">Ngoc Phuong</p>
+        <p className="font-bold md:text-lg">{item.name}</p>
       </div>
       <div className="flex items-center">
         <IconButton>

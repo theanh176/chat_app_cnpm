@@ -9,8 +9,6 @@ import { useBreakPoint } from "../../../hooks/useBreakPoint";
 const Main = () => {
   const navigate = useNavigate();
 
-  const { isMobile } = useBreakPoint();
-
   useEffect(() => {
     !isSignIn() && navigate("/sign-in");
   }, [navigate]);

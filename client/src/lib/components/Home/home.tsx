@@ -7,15 +7,13 @@ import ListMess from "../messenger/listMess/listMess";
 import BoxMess from "../messenger/boxMess";
 import InfoMess from "../messenger/infoMess";
 
-type Props = {};
-
-const Home = ({}: Props) => {
+const Home = () => {
   const { isMobile } = useBreakPoint();
 
   const location = useLocation();
   const path = location.pathname;
 
-  const isShowInfo = useSelector((state: any) => state.isShowInfo);
+  const isShowInfo = useSelector((state: any) => state.isShowInfo.isShowInfo);
 
   const HomeMobile = () => {
     return isShowInfo ? (
@@ -23,14 +21,14 @@ const Home = ({}: Props) => {
     ) : path.includes("messenger") ? (
       <BoxMess />
     ) : (
-      <ListMess ShowListMess={""} />
+      <ListMess />
     );
   };
 
   const HomeDesktop = () => {
     return (
       <div className="flex max-h-[90vh]">
-        <ListMess ShowListMess={""} />
+        <ListMess />
         <BoxMess />
         {isShowInfo && <InfoMess />}
       </div>
