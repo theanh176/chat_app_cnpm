@@ -17,7 +17,6 @@ const useChangePass = () => {
 
 	const handleSubmitForm = useCallback(
 		async (dataForm: IFormInput) => {
-            console.log(dataForm);
 			await mutate(dataForm);
 		},
 		[mutate]

@@ -3,8 +3,11 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 const initialState = {
 	isShowInfo: false,
 	userInfor: {},
-	isLoadingShow: false,
 	isChangePass: false,
+	toggleDialogInfo: { 
+		isShow: false,
+		_id: "",
+	}
 };
 
 const showInfoSlice = createSlice({
@@ -13,16 +16,6 @@ const showInfoSlice = createSlice({
 	reducers: {
 		toggleInfo: (state) => {
 			state.isShowInfo = !state.isShowInfo;
-		},
-	},
-});
-
-const isLoadingShowSlice = createSlice({
-	name: "isLoadingShow",
-	initialState,
-	reducers: {
-		isLoadingShow: (state, action) => {
-			state.isLoadingShow = action.payload;
 		},
 	},
 });
@@ -37,16 +30,27 @@ const isChangePassSlice = createSlice({
 	},
 });
 
+const toggleDialogInfoSlice = createSlice({
+	name: "toggleDialogInfo",
+	initialState,
+	reducers: {
+		toggleDialogInfo: (state, action) => {
+			state.toggleDialogInfo.isShow = !state.toggleDialogInfo.isShow;
+			state.toggleDialogInfo._id = action.payload.idFriend;
+		}
+	},
+});
+
 const store = configureStore({
 	reducer: {
 		isShowInfo: showInfoSlice.reducer,
-		isLoadingShow: isLoadingShowSlice.reducer,
 		isChangePass: isChangePassSlice.reducer,
+		toggleDialogInfo: toggleDialogInfoSlice.reducer,
 	},
 });
 
 export const { toggleInfo } = showInfoSlice.actions;
-export const { isLoadingShow } = isLoadingShowSlice.actions;
 export const { isChangePass } = isChangePassSlice.actions;
+export const { toggleDialogInfo } = toggleDialogInfoSlice.actions;
 
 export default store;

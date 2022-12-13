@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import { Tab, TextField } from "@mui/material";
@@ -8,13 +9,18 @@ import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import { useLocation, useNavigate } from "react-router-dom";
 import ItemFriendRequest from "./itemFriendRequest";
 import ItemFriend from "./itemFriend";
+import ItemChannel from "./itemChannel";
+import { useListRequest } from "./useRequest";
+import Loading from "../Loading/loading";
+import WarningEmpty from "../WarningEmpty/warningEmpty";
+import useFriends from "./useFriends";
+import useChannel from "./useChannel";
+import DialogInfo from "../DialogInfo/dialogInfo";
 
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PeopleIcon from "@mui/icons-material/People";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import SearchIcon from "../../../assets/icons/search_purple.svg";
-
-type Props = {};
 
 interface IFormInput {
   search: string;
@@ -158,7 +164,118 @@ const Form = () => {
   );
 };
 
-const Friends = ({}: Props) => {
+const FriendsList = () => {
+  const { isMobile } = useBreakPoint();
+
+  const { friendsData, loadingFriends } = useFriends();
+
+  return (
+    <div className="flex flex-col p-4 h-full ">
+      {loadingFriends && <Loading />}
+      <div className="flex gap-4 items-center mb-3 md:justify-center">
+        <PeopleIcon
+          classes={{
+            root: "text-primary-icon",
+          }}
+          fontSize={isMobile ? "medium" : "large"}
+        />
+        <p className="font-bold md:text-xl">Friends List</p>
+      </div>
+      <Form />
+      <div className="h-full overflow-y-scroll mt-3 mb-[50px] md:px-10">
+        {friendsData?.length < 1 && (
+          <WarningEmpty message="No have friend" />
+        )}
+        {friendsData?.map((item: any) => (
+          <ItemFriend
+            key={item._id}
+            name={item?.name}
+            avatar={item?.avatar}
+            idFriend={item?._id}
+          />
+        ))}
+      </div>
+      <DialogInfo />
+    </div>
+  );
+};
+
+const FriendRequest = () => {
+  const { isMobile } = useBreakPoint();
+
+  const { listRequestData, loadListRequest } = useListRequest();
+
+  const listRequest = listRequestData?.filter(
+    (item: any) => item?.status === 0
+  );
+
+  return (
+    <div className="flex flex-col p-4 h-full">
+      {loadListRequest && <Loading />}
+      <div className="flex gap-4 items-center mb-3 md:justify-center">
+        <PersonAddIcon
+          classes={{
+            root: "text-primary-icon",
+          }}
+          fontSize={isMobile ? "medium" : "large"}
+        />
+        <p className="font-bold md:text-xl">Friends Request</p>
+      </div>
+      <div className="h-full overflow-y-scroll mb-[50px] md:px-10">
+        {listRequest?.length < 1 && (
+          <WarningEmpty message="No friend request" />
+        )}
+        {listRequestData?.map(
+          (item: any) =>
+            item?.status === 0 && (
+              <ItemFriendRequest
+                key={item?._id}
+                name={item?.sender?.name}
+                avatar={item?.sender?.avatar?.link}
+                idFriend={item?._id}
+              />
+            )
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Group = () => {
+  const { isMobile } = useBreakPoint();
+
+  const { myChannelData, loadingMyChannel } = useChannel();
+
+  return (
+    <div className="flex flex-col p-4 h-full">
+      {loadingMyChannel && <Loading />}
+      <div className="flex gap-4 items-center mb-3 md:justify-center">
+        <GroupAddIcon
+          classes={{
+            root: "text-primary-icon",
+          }}
+          fontSize={isMobile ? "medium" : "large"}
+        />
+        <p className="font-bold md:text-xl">Groups</p>
+      </div>
+      <div className="h-full overflow-y-scroll mb-[50px] md:px-10">
+        {myChannelData?.length < 1 && (
+          <WarningEmpty message="No have group" />
+        )}
+        {myChannelData?.map((item: any) => (
+          <ItemChannel
+            key={item._id}
+            name={item?.name}
+            avatar={item?.avatar}
+            idChannel={item?._id}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Friends = () => {
   const { isMobile } = useBreakPoint();
 
   const location = useLocation();
@@ -167,92 +284,6 @@ const Friends = ({}: Props) => {
     [location]
   );
   const tab = searchParams.get("tab");
-
-  const FriendsList = () => {
-    return (
-      <div className="flex flex-col p-4 h-full ">
-        <div className="flex gap-4 items-center mb-3 md:justify-center">
-          <PeopleIcon
-            classes={{
-              root: "text-primary-icon",
-            }}
-            fontSize={isMobile ? "medium" : "large"}
-          />
-          <p className="font-bold md:text-xl">Friends List</p>
-        </div>
-        <Form />
-
-        <div className="h-full overflow-scroll mt-3 mb-[50px] md:px-10">
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-        </div>
-      </div>
-    );
-  };
-
-  const Group = () => {
-    return (
-      <div className="flex flex-col p-4 h-full">
-        <div className="flex gap-4 items-center mb-3 md:justify-center">
-          <GroupAddIcon
-            classes={{
-              root: "text-primary-icon",
-            }}
-            fontSize={isMobile ? "medium" : "large"}
-          />
-          <p className="font-bold md:text-xl">Groups</p>
-        </div>
-        <div className="h-full overflow-scroll mb-[50px] md:px-10">
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-          <ItemFriend name="Phuong" avatar="A" status="" />
-        </div>
-      </div>
-    );
-  };
-
-  const FriendRequest = () => {
-    return (
-      <div className="flex flex-col p-4 h-full">
-        <div className="flex gap-4 items-center mb-3 md:justify-center">
-          <PersonAddIcon
-            classes={{
-              root: "text-primary-icon",
-            }}
-            fontSize={isMobile ? "medium" : "large"}
-          />
-          <p className="font-bold md:text-xl">Friends Request</p>
-        </div>
-        <div className="h-full overflow-scroll mb-[50px] md:px-10">
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-          <ItemFriendRequest name="Phuong" avatar="A" status="" />
-        </div>
-      </div>
-    );
-  };
 
   const FriendsContent = () => {
     return tab === "0" ? (

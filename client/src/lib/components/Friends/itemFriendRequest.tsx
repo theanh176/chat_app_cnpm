@@ -1,7 +1,10 @@
-import React from "react";
+import { useEffect } from "react";
 
 import { IconButton } from "@mui/material";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
+import { useAcceptRequest, useRejectRequest } from "./useRequest";
+import Swal from "sweetalert2";
+import Loading from "../Loading/loading";
 
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
@@ -10,24 +13,53 @@ import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 interface IFriendRequest {
   avatar: string;
   name: string;
-  status: string;
+  idFriend: string;
 }
 
-const ItemFriendRequest = ({ avatar, name, status }: IFriendRequest) => {
+const ItemFriendRequest = ({ avatar, name, idFriend }: IFriendRequest) => {
   const { isMobile } = useBreakPoint();
+
+  const { acceptRequestData, loadingAcceptRequest, handleAcceptRequest } =
+    useAcceptRequest();
+
+  const { rejectRequestData, loadingRejectRequest, handleRejectRequest } =
+    useRejectRequest();
+
+  useEffect(() => {
+    acceptRequestData?.status === 200 &&
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Kết bạn thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+  }, [acceptRequestData]);
+
+  useEffect(() => {
+    rejectRequestData?.status === 200 &&
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Đã từ chối lời mời kết bạn",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+  }, [rejectRequestData]);
 
   return (
     <div className="py-2 border-y flex items-center justify-between md:py-4">
+      {loadingAcceptRequest || loadingRejectRequest && <Loading />}
       <div className="flex items-center gap-3 md:gap-4">
         <img
-          src={AvatarDefaultIcon}
+          src={avatar ? avatar : AvatarDefaultIcon}
           alt="Avatar"
           className="w-12 aspect-square rounded-full md:w-16"
         />
-        <p className="font-bold md:text-lg">Ngoc Phuong</p>
+        <p className="font-bold md:text-lg">{name}</p>
       </div>
       <div className="flex items-center md:gap-4">
-        <IconButton>
+        <IconButton onClick={() => handleAcceptRequest(idFriend)}>
           <CheckCircleOutlineSharpIcon
             sx={{
               color: "#1ed760",
@@ -35,7 +67,7 @@ const ItemFriendRequest = ({ avatar, name, status }: IFriendRequest) => {
             }}
           />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => handleRejectRequest(idFriend)}>
           <HighlightOffSharpIcon
             sx={{
               color: "#e32124",

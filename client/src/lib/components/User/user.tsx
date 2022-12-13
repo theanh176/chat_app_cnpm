@@ -8,11 +8,12 @@ import { GetUser } from "./useUser";
 import dayjs from "dayjs";
 import Loading from "../Loading/loading";
 import ChangePass from "../ChangePass/changePass";
+import Swal from "sweetalert2";
 
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import PasswordRoundedIcon from "@mui/icons-material/PasswordRounded";
-
+import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { isChangePass } from "../../../store";
@@ -34,7 +35,6 @@ interface UserState {
 const User = () => {
   const navigate = useNavigate();
 
-  
   const { isChangePass: isChangePassState } = useSelector(
     (state: any) => state.isChangePass
   );
@@ -55,7 +55,11 @@ const User = () => {
         <div className="bg-banner h-[160px] bg-cover rounded-t-xl relative md:h-[250px]">
           <div className="absolute -bottom-10 w-full md:-bottom-20">
             <img
-              src={dataUser?.avatar?.link}
+              src={
+                dataUser?.avatar?.link
+                  ? dataUser?.avatar?.link
+                  : AvatarDefaultIcon
+              }
               alt=""
               className="w-[120px] object-cover rounded-full mx-auto border-4 border-white md:w-[200px] md:border-8"
             />
@@ -73,7 +77,7 @@ const User = () => {
 
     const handleClickChangePass = () => {
       dispatch(isChangePass());
-    }
+    };
     return (
       <div className="px-4 md:px-[160px]">
         <p className="font-bold md:text-2xl">Profile</p>
@@ -122,10 +126,27 @@ const User = () => {
   };
 
   const LogOut = () => {
+    // const handleLogOut = () => {
+    //   SignOutApi();
+    //   axios.defaults.headers.common["Authorization"] = "";
+    //   window.location.reload();
+    // };
     const handleLogOut = () => {
-      SignOutApi();
-      axios.defaults.headers.common["Authorization"] = "";
-      window.location.reload();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will be logged out!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, log out!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          SignOutApi();
+          axios.defaults.headers.common["Authorization"] = "";
+          window.location.reload();
+        }
+      });
     };
 
     return (

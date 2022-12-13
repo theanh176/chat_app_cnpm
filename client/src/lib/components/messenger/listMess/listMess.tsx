@@ -1,17 +1,9 @@
-import {
-  Box,
-  IconButton,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import { TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import SearchIcon from "../../../../assets/icons/search_purple.svg";
-import BasicModal from "../../CustomMui/modalCreateChat";
-import { useBreakPoint } from "../../../../hooks/useBreakPoint";
 import ItemMess from "../itemMess";
+import useListMess from "./useListMess";
+import Loading from "../../Loading/loading";
 
 interface IFormInput {
   search: string;
@@ -81,33 +73,24 @@ const Form = () => {
   );
 };
 
-interface Props {
-  ShowListMess: any;
-}
-const ListMess = ({ ShowListMess }: Props) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const { isMobile } = useBreakPoint();
+const ListMess = () => {
+  const { myChannelData, loadingMyChannel } = useListMess();
 
   return (
-    <div className=" bg-white p-4 rounded-xl md:mx-4 md_mb-4 md:min-w-[25%] h-[calc(100vh-140px)] md:h-[calc(100vh-100px)]">
-      <BasicModal open={open} handleClose={handleClose} />
-      <div className="pb-5">
-        <p className="font-bold text-2xl text-center pb-5">Message</p>
-        <Form />
+    <>
+      {loadingMyChannel && <Loading />}
+      <div className=" bg-white p-4 rounded-xl md:mx-4 md_mb-4 md:min-w-[25%] h-[calc(100vh-140px)] md:h-[calc(100vh-100px)]">
+        <div className="pb-5">
+          <p className="font-bold text-2xl text-center pb-5">Message</p>
+          <Form />
+        </div>
+        <div className="overflow-y-scroll h-[80%] scrollBehavior bg-white">
+          {myChannelData?.map((item: any, index: number) => (
+            <ItemMess key={index} item={item} />
+          ))}
+        </div>
       </div>
-      <div className="overflow-scroll h-[80%] scrollBehavior bg-white">
-        <ItemMess name="Phuong" avatar="A" id="1" />
-        <ItemMess name="Phuong" avatar="A" id="2" />
-        <ItemMess name="Phuong" avatar="A" id="31" />
-        <ItemMess name="Phuong" avatar="A" id="331" />
-        <ItemMess name="Phuong" avatar="A" id="341" />
-        <ItemMess name="Phuong" avatar="A" id="11" />
-        <ItemMess name="Phuong" avatar="A" id="122" />
-      </div>
-    </div>
+    </>
   );
 };
 

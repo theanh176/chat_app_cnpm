@@ -1,7 +1,7 @@
 import * as request from "../utils/request";
 import Cookies from "js-cookie";
 
-export const GetInfo = async (id) => {
+export const GetListRequest = async () => {
     // get the access token from the cookie
     const access_token = Cookies.get("access_token");
     // set the authorization header
@@ -11,14 +11,14 @@ export const GetInfo = async (id) => {
         },
     };
     try {
-        const response = await request.get(`user/get/${id}`, options);
+        const response = await request.get('request/list', options);
         return response;
     } catch (error) {
         return error?.response;
     }
 };
 
-export const GetMyInfo = async() => {
+export const AcceptRequest = async (id) => {
     // get the access token from the cookie
     const access_token = Cookies.get("access_token");
     // set the authorization header
@@ -27,15 +27,17 @@ export const GetMyInfo = async() => {
             Authorization: `Bearer ${access_token}`,
         },
     };
+    // patch the request
     try {
-        const response = await request.get(`/user/getinfo`, options);
+        const response = await request.patch(`request/accept/${id}`, {}, options);
         return response;
-    } catch (error) {
+    }
+    catch (error) {
         return error?.response;
     }
 };
 
-export const GetMyFriends = async () => {
+export const RejectRequest = async (id) => {
     // get the access token from the cookie
     const access_token = Cookies.get("access_token");
     // set the authorization header
@@ -44,15 +46,17 @@ export const GetMyFriends = async () => {
             Authorization: `Bearer ${access_token}`,
         },
     };
+    // patch the request
     try {
-        const response = await request.get(`/user/getfiend`, options);
+        const response = await request.patch(`request/reject/${id}`, {}, options);
         return response;
-    } catch (error) {
+    }
+    catch (error) {
         return error?.response;
     }
 }
 
-export const GetInfoFriend = async (_id) => {
+export const DeleteRequest = async (id) => {
     // get the access token from the cookie
     const access_token = Cookies.get("access_token");
     // set the authorization header
@@ -61,11 +65,12 @@ export const GetInfoFriend = async (_id) => {
             Authorization: `Bearer ${access_token}`,
         },
     };
+    // delete the request
     try {
-        const response = await request.get(`user/get/${_id}`, options);
+        const response = await request.del(`request/cancel/${id}`, options);
         return response;
-    } catch (error) {
+    }
+    catch (error) {
         return error?.response;
     }
 }
-
