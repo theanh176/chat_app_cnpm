@@ -4,13 +4,13 @@ import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import { toggleDialogListFriend } from "../../../store";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import ItemFriend from "./itemFriend";
-import WarningEmpty from "../WarningEmpty/warningEmpty";
-import useFriends from "../Friends/useFriends";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useCreateChannel } from "../Friends/useChannel";
+import useFriends from "../Friends/useFriends";
 import Loading from "../Loading/loading";
+import WarningEmpty from "../WarningEmpty/warningEmpty";
+import ItemFriend from "./itemFriend";
 
 const DialogListFriend = () => {
 	const { isMobile } = useBreakPoint();
@@ -33,15 +33,13 @@ const DialogListFriend = () => {
 				showConfirmButton: false,
 				timer: 1500,
 			});
-		// Load lại trang
-		
 	}, [createChannelData]);
 
 	const handleCreateGroup = () => {
 		// tạo nhóm
 		const groupData = {
 			list_user: isIdUser,
-			name: isGroupName,
+			name: isGroupName ? isGroupName : "Nhóm chưa có tên",
 		};
 		handleCreateChannel(groupData);
 	};

@@ -11,6 +11,13 @@ const initialState = {
 	toggleDialogListFriend: {
 		isShow: false,
 	},
+	toggleDialogChannel: {
+		isShow: false,
+		_id: "",
+	},
+	toggleDialogSuggestions: {
+		isShow: false,
+	}
 };
 
 const showInfoSlice = createSlice({
@@ -54,12 +61,35 @@ const toggleDialogListFriendSlice = createSlice({
 	},
 });
 
+const toggleDialogChannelSlice = createSlice({
+	name: "toggleDialogChannel",
+	initialState,
+	reducers: {
+		toggleDialogChannel: (state, action) => {
+			state.toggleDialogChannel.isShow = !state.toggleDialogChannel.isShow;
+			state.toggleDialogChannel._id = action.payload.idChannel;
+		}
+	},
+});
+
+const toggleDialogSuggestionsSlice = createSlice({
+	name: "toggleDialogSuggestions",
+	initialState,
+	reducers: {
+		toggleDialogSuggestions: (state) => {
+			state.toggleDialogSuggestions.isShow = !state.toggleDialogSuggestions.isShow;
+		}
+	},
+});
+
 const store = configureStore({
 	reducer: {
 		isShowInfo: showInfoSlice.reducer,
 		isChangePass: isChangePassSlice.reducer,
 		toggleDialogInfo: toggleDialogInfoSlice.reducer,
 		toggleDialogListFriend: toggleDialogListFriendSlice.reducer,
+		toggleDialogChannel: toggleDialogChannelSlice.reducer,
+		toggleDialogSuggestions: toggleDialogSuggestionsSlice.reducer,
 	},
 });
 
@@ -67,5 +97,7 @@ export const { toggleInfo } = showInfoSlice.actions;
 export const { isChangePass } = isChangePassSlice.actions;
 export const { toggleDialogInfo } = toggleDialogInfoSlice.actions;
 export const { toggleDialogListFriend } = toggleDialogListFriendSlice.actions;
+export const { toggleDialogChannel } = toggleDialogChannelSlice.actions;
+export const { toggleDialogSuggestions } = toggleDialogSuggestionsSlice.actions;
 
 export default store;

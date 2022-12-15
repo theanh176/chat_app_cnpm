@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Tab, TextField } from "@mui/material";
@@ -20,8 +20,14 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PeopleIcon from "@mui/icons-material/People";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "../../../assets/icons/search_purple.svg";
-import { toggleDialogListFriend } from "../../../store";
+import {
+	toggleDialogListFriend,
+	toggleDialogSuggestions,
+} from "../../../store";
 import DialogListFriend from "../DialogIogListFriend/dialogListFriend";
+import DialogChannel from "../DialogChannel/dialogChannel";
+import DialogSuggestion from "../DialogSuggestion/dialogSuggestion";
+import ItemCancelRequest from "./itemCancelRequest";
 
 interface IFormInput {
 	search: string;
@@ -208,6 +214,7 @@ const FriendsList = () => {
 
 const FriendRequest = () => {
 	const { isMobile } = useBreakPoint();
+	const dispatch = useDispatch();
 
 	const { listRequestData, loadListRequest } = useListRequest();
 
@@ -216,39 +223,56 @@ const FriendRequest = () => {
 
 	const listRequest = listRequestData?.filter(
 		(item: any) =>
-			item?.status === 0 && item?.sender?._id !== user?.user?._id
+			item?.status === 0
 	);
+
+	const handleShowDialogSuggestion = () => {
+		dispatch(toggleDialogSuggestions());
+	};
 
 	return (
 		<div className="flex flex-col p-4 h-full">
 			{loadListRequest && <Loading />}
 			<div className="flex gap-4 items-center mb-3 md:justify-center">
-				<PersonAddIcon
-					classes={{
-						root: "text-primary-icon",
-					}}
-					className="cursor-pointer hover:shadow-lg hover:shadow-cyan-500/50 rounded-full hover:bg-primary-icon hover:text-white"
-					fontSize={isMobile ? "medium" : "large"}
-				/>
+				<div onClick={handleShowDialogSuggestion}>
+					<PersonAddIcon
+						classes={{
+							root: "text-primary-icon",
+						}}
+						className="cursor-pointer hover:shadow-lg hover:shadow-cyan-500/50 rounded-full hover:bg-primary-icon hover:text-white"
+						fontSize={isMobile ? "medium" : "large"}
+					/>
+				</div>
 				<p className="font-bold md:text-xl">Friends Request</p>
 			</div>
 			<div className="h-full overflow-y-scroll mb-[50px] md:px-10">
 				{listRequest?.length < 1 && (
 					<WarningEmpty message="No friend request" />
 				)}
-				{listRequestData?.map(
-					(item: any) =>
+				{listRequestData?.map((item: any) =>
+					item?.status === 0 &&
+					item?.sender?._id !== user?.user?._id ? (
+						<ItemFriendRequest
+							key={item?._id}
+							name={item?.sender?.name}
+							avatar={item?.sender?.avatar?.link}
+							idFriend={item?._id}
+						/>
+					) : (
 						item?.status === 0 &&
-						item?.sender?._id !== user?.user?._id && (
-							<ItemFriendRequest
+						item?.sender?._id === user?.user?._id && (
+							<ItemCancelRequest
 								key={item?._id}
-								name={item?.sender?.name}
-								avatar={item?.sender?.avatar?.link}
+								name={item?.recever?.name}
+								avatar={item?.recever?.avatar?.link}
 								idFriend={item?._id}
+								_id={item?._id}
 							/>
 						)
+					)
 				)}
 			</div>
+			<DialogSuggestion />
 		</div>
 	);
 };
@@ -292,12 +316,12 @@ const Group = () => {
 				))}
 			</div>
 			<DialogListFriend />
+			<DialogChannel />
 		</div>
 	);
 };
 
 const Friends = () => {
-
 	const location = useLocation();
 	const searchParams = useMemo(
 		() => new URLSearchParams(location.search),

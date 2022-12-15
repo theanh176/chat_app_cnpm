@@ -4,6 +4,8 @@ import {
   GetListRequest,
   AcceptRequest,
   RejectRequest,
+  CancelRequest,
+  SendRequest,
 } from "../../../api/requests";
 
 export const useListRequest = () => {
@@ -61,3 +63,46 @@ export const useRejectRequest = () => {
     handleRejectRequest,
   };
 };
+
+export const useCancelRequest = () => {
+  const {
+    data: cancelRequestData,
+    mutate: cancelRequest,
+    isLoading: loadingCancelRequest,
+  } = useMutation(CancelRequest);
+
+  const handleCancelRequest = useCallback(
+    async (idFriend: string) => {
+      await cancelRequest(idFriend);
+    },
+    [cancelRequest]
+  );
+
+  return {
+    cancelRequestData,
+    loadingCancelRequest,
+    handleCancelRequest,
+  };
+}
+
+export const useSendRequest = () => {
+  const {
+    data: sendRequestData,
+    mutate: sendRequest,
+    isLoading: loadingSendRequest,
+  } = useMutation(SendRequest);
+
+  const handleSendRequest = useCallback(
+    async (idFriend: any) => {
+      await sendRequest(idFriend);
+    },
+    [sendRequest]
+  );
+
+  return {
+    sendRequestData,
+    loadingSendRequest,
+    handleSendRequest,
+  };
+}
+
