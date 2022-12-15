@@ -7,7 +7,10 @@ const initialState = {
 	toggleDialogInfo: { 
 		isShow: false,
 		_id: "",
-	}
+	},
+	toggleDialogListFriend: {
+		isShow: false,
+	},
 };
 
 const showInfoSlice = createSlice({
@@ -41,16 +44,28 @@ const toggleDialogInfoSlice = createSlice({
 	},
 });
 
+const toggleDialogListFriendSlice = createSlice({
+	name: "toggleDialogListFriend",
+	initialState,
+	reducers: {
+		toggleDialogListFriend: (state) => {
+			state.toggleDialogListFriend.isShow = !state.toggleDialogListFriend.isShow;
+		}
+	},
+});
+
 const store = configureStore({
 	reducer: {
 		isShowInfo: showInfoSlice.reducer,
 		isChangePass: isChangePassSlice.reducer,
 		toggleDialogInfo: toggleDialogInfoSlice.reducer,
+		toggleDialogListFriend: toggleDialogListFriendSlice.reducer,
 	},
 });
 
 export const { toggleInfo } = showInfoSlice.actions;
 export const { isChangePass } = isChangePassSlice.actions;
 export const { toggleDialogInfo } = toggleDialogInfoSlice.actions;
+export const { toggleDialogListFriend } = toggleDialogListFriendSlice.actions;
 
 export default store;
