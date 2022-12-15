@@ -1,17 +1,15 @@
-import React from "react";
 
-import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import { Dialog } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import { toggleDialogInfo } from "../../../store";
 import useDialogInfo from "./useDialogInfo";
-import dayjs from "dayjs";
-import Loading from "../Loading/loading";
-import { useNavigate } from "react-router-dom";
 
-import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
-import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import MapsUgcRoundedIcon from "@mui/icons-material/MapsUgcRounded";
+import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 
 const DialogInfo = () => {
   const { isMobile } = useBreakPoint();
@@ -22,7 +20,7 @@ const DialogInfo = () => {
     (state: any) => state.toggleDialogInfo.toggleDialogInfo
   );
 
-  const { dataFriend, isLoading } = useDialogInfo(_id);
+  const { dataFriend } = useDialogInfo(_id);
 
   const formatDays = (day: any) => {
     return dayjs(day).format("DD/MM/YYYY");
@@ -96,7 +94,7 @@ const DialogInfo = () => {
       open={isShow}
       onClose={() => dispatch(toggleDialogInfo({ idFriend: "" }))}
       classes={{
-        paper: "pb-4 min-w-[300px] md:pb-10",
+        paper: "pb-4 min-w-[300px] md:pb-10 md:min-w-[550px]",
       }}
       sx={{
         "& .MuiDialog-paper": {

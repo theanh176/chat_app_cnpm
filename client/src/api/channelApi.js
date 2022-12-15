@@ -34,3 +34,21 @@ export const GetInfoChannel = async (id) => {
     return error?.response;
   }
 };
+
+// Tạo channel
+export const CreateChannel = async (data) => {
+  // get the access token from the cookie
+  const access_token = Cookies.get("access_token");
+  // set the authorization header
+  const options = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+  try {
+    const response = await request.post("channel/create", data, options);
+    return response;
+  } catch (error) {
+    return error?.response;
+  }
+}

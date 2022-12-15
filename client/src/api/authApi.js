@@ -7,6 +7,8 @@ export const SignInApi = async (data) => {
     response?.data && Cookies.set("access_token", response?.data?.access_token);
     // save response data to SessionStorage
     sessionStorage.setItem("user", JSON.stringify(response?.data));
+    // save response data to localStorage
+    localStorage.setItem("user", JSON.stringify(response?.data));
     
     return response;
   } catch (error) {

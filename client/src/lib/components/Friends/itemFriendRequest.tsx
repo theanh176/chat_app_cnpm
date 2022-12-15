@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 
 import { IconButton } from "@mui/material";
-import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { useAcceptRequest, useRejectRequest } from "./useRequest";
 import Swal from "sweetalert2";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import Loading from "../Loading/loading";
+import { useAcceptRequest, useRejectRequest } from "./useRequest";
 
-import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
+import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 
 interface IFriendRequest {
   avatar: string;
