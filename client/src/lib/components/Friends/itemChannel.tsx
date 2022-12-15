@@ -6,6 +6,8 @@ import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import HighlightOffSharpIcon from "@mui/icons-material/HighlightOffSharp";
 import AddFriendChannel from "../../../assets/icons/add-friend.svg";
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
+import { toggleDialogChannel } from "../../../store";
+import { useDispatch } from "react-redux";
 
 interface IChannel {
 	avatar: string;
@@ -16,6 +18,8 @@ interface IChannel {
 const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 	const { isMobile } = useBreakPoint();
 
+	const dispatch = useDispatch();
+
 	const [open, setOpen] = React.useState(false);
 
 	const handleClose = () => {
@@ -24,6 +28,11 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 
 	const handleOpen = () => {
 		setOpen(true);
+	};
+
+	const handleShowDialogChannel = () => {
+		console.log(1);
+		dispatch(toggleDialogChannel({ idChannel }));
 	};
 
 	//   const ConformDeleteFriend = () => {
@@ -64,7 +73,10 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 
 	return (
 		<div className="py-2 border-t flex items-center justify-between md:py-4">
-			<div className="flex items-center gap-3 md:gap-4 cursor-pointer">
+			<div
+				className="flex items-center gap-3 md:gap-4 cursor-pointer"
+				onClick={handleShowDialogChannel}
+			>
 				<img
 					src={avatar ? avatar : AvatarDefaultIcon}
 					alt="Avatar"

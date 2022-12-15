@@ -69,3 +69,20 @@ export const GetInfoFriend = async (_id) => {
     }
 }
 
+export const GetMySuggestions = async () => {
+    // get the access token from the cookie
+    const access_token = Cookies.get("access_token");
+    // set the authorization header
+    const options = {
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    };
+    try {
+        const response = await request.get(`/user/suggestion?num=20`, options);
+        return response;
+    } catch (error) {
+        return error?.response;
+    }
+}
+
