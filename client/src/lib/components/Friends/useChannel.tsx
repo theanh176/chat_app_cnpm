@@ -27,7 +27,6 @@ export const useCreateChannel = () => {
 
 	const handleCreateChannel = useCallback(
 		async (data: any) => {
-			console.log(data);
 			await createChannel(data);
 		},
 		[createChannel]
