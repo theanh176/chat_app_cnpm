@@ -8,13 +8,17 @@ import {
 } from "../../../api/channelApi";
 
 export const useChannel = () => {
-	const { data: myChannelData, isLoading: loadingMyChannel } = useQuery(
-		"myChannel",
-		GetMyChannel
-	);
+	const {
+		data: myChannelData,
+		isLoading: loadingMyChannel,
+		refetch,
+	} = useQuery("myChannel", GetMyChannel, {
+		refetchOnWindowFocus: false,
+	});
 	return {
 		myChannelData,
 		loadingMyChannel,
+		refetch,
 	};
 };
 

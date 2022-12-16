@@ -29,6 +29,7 @@ import DialogListFriend from "../DialogIogListFriend/dialogListFriend";
 import DialogSuggestion from "../DialogSuggestion/dialogSuggestion";
 import ItemCancelRequest from "./itemCancelRequest";
 import DialogAddFriendChannel from "../DialogChannel/dialogAddFriendChannel";
+import GetListSuggestions from "../DialogSuggestion/useDialogSuggestion";
 
 interface IFormInput {
 	search: string;
@@ -155,15 +156,10 @@ const Form = () => {
 						}}
 						placeholder="Nhập từ khóa tìm kiếm"
 						{...register("search", {
-							required: "Vui lòng nhập từ khóa tìm kiếm !",
-							maxLength: {
-								value: 20,
-								message:
-									"Từ khóa tìm kiếm không được quá 20 ký tự !",
-							},
+							required: "Please enter your phone.",
 							pattern: {
-								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-								message: "Từ khóa tìm kiếm không hợp lệ !",
+								value: /^[0-9]{10}$/,
+								message: "Please enter a valid phone !",
 							},
 						})}
 						InputProps={{
@@ -192,7 +188,7 @@ const FriendsList = () => {
 					className="cursor-pointer hover:shadow-lg hover:shadow-cyan-500/50 rounded-full hover:bg-primary-icon hover:text-white"
 					fontSize={isMobile ? "medium" : "large"}
 				/>
-				<p className="font-bold md:text-xl">Friends List</p>
+				<p className="font-bold md:text-xl">Friend List</p>
 			</div>
 			<Form />
 			<div className="h-full overflow-y-scroll mt-3 mb-[50px] md:px-10">
@@ -218,6 +214,7 @@ const FriendRequest = () => {
 	const dispatch = useDispatch();
 
 	const { listRequestData, loadListRequest, refetch } = useListRequest();
+	const { refetchListSuggestions } = GetListSuggestions();
 
 	//get data in local storage
 	const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -227,13 +224,9 @@ const FriendRequest = () => {
 	);
 
 	const handleShowDialogSuggestion = () => {
+		refetchListSuggestions();
 		dispatch(toggleDialogSuggestions());
 	};
-
-	// const hanleRefetch = () => {
-	// 	console.log(1);
-	// 	refetch();
-	// };
 
 	return (
 		<div className="flex flex-col p-4 h-full">
@@ -248,7 +241,7 @@ const FriendRequest = () => {
 						fontSize={isMobile ? "medium" : "large"}
 					/>
 				</div>
-				<p className="font-bold md:text-xl">Friends Request</p>
+				<p className="font-bold md:text-xl">Friend Request</p>
 			</div>
 			<div className="h-full overflow-y-scroll mb-[50px] md:px-10">
 				{listRequest?.length < 1 && (
@@ -272,7 +265,6 @@ const FriendRequest = () => {
 								avatar={item?.recever?.avatar?.link}
 								idFriend={item?._id}
 								_id={item?._id}
-								// handleRefetch={hanleRefetch}
 							/>
 						)
 					)

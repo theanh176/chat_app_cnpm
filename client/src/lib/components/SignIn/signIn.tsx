@@ -73,6 +73,8 @@ const Form = () => {
         timer: 1500,
       });
       navigate("/");
+      // reload page
+      window.location.reload();
     }
   }, [loginRes, navigate]);
 

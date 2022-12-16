@@ -12,7 +12,7 @@ import {
 	toggleDialogAddFriendChannel,
 } from "../../../store";
 import { useDispatch } from "react-redux";
-import { useLeaveChannel } from "./useChannel";
+import { useChannel, useLeaveChannel } from "./useChannel";
 import Swal from "sweetalert2";
 
 interface IChannel {
@@ -26,6 +26,8 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 
 	const dispatch = useDispatch();
 
+	const { refetch } = useChannel();
+
 	const { handleLeaveChannel, loadingLeaveChannel, leaveChannelData } =
 		useLeaveChannel();
 
@@ -34,11 +36,12 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 			Swal.fire({
 				position: "center",
 				icon: "success",
-				title: "Rời khỏi kênh thành công",
+				title: "Leave channel success",
 				showConfirmButton: false,
 				timer: 1500,
 			});
-	}, [leaveChannelData]);
+		leaveChannelData?.status === 200 && refetch();
+	}, [leaveChannelData, refetch]);
 
 	const [open, setOpen] = React.useState(false);
 
@@ -51,12 +54,10 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 	};
 
 	const handleShowDialogChannel = () => {
-		console.log(1);
 		dispatch(toggleDialogChannel({ idChannel }));
 	};
 
 	const handleShowDialogAddFriendChannel = () => {
-		console.log(2);
 		dispatch(toggleDialogAddFriendChannel({ idChannel }));
 	};
 
@@ -81,23 +82,23 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 			>
 				<div className="text-lg flex justify-center gap-2 items-center font-bold text-center text-error md:text-2xl">
 					<img src={RejectedIcon} alt="Rejected" className="w-10" />
-					<p>RỜI KHỎI KÊNH</p>
+					<p>Leave Channel</p>
 				</div>
 				<div className="text-sm mt-4 md:text-base">
-					Bạn có chắc chắn muốn rời khỏi kênh này không?
+					Are you sure you want to leave this channel?
 				</div>
 				<div className="flex justify-center gap-4 mt-10">
 					<button
 						className="bg-primary text-white px-4 py-2 rounded-xl w-full"
 						onClick={handleClose}
 					>
-						Huỷ
+						Cancel
 					</button>
 					<button
 						className="bg-error text-white px-4 py-2 rounded-xl w-full"
 						onClick={handleIsLeaveChannel}
 					>
-						Rời khỏi kênh
+						Yes
 					</button>
 				</div>
 			</Dialog>

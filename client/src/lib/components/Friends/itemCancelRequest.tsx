@@ -14,25 +14,15 @@ interface IFriendRequest {
 	name: string;
 	idFriend: string;
 	_id: string;
-	// handleRefetch: () => void; 
 }
 
-const ItemCancelRequest = ({
-	avatar,
-	name,
-	idFriend,
-	_id,
-}: IFriendRequest) => {
+const ItemCancelRequest = ({ avatar, name, idFriend, _id }: IFriendRequest) => {
 	const { isMobile } = useBreakPoint();
 
-  const { listRequestData, loadListRequest, refetch } = useListRequest();
+	const { refetch } = useListRequest();
 
 	const { cancelRequestData, loadingCancelRequest, handleCancelRequest } =
 		useCancelRequest();
-
-	const handleRefetchListRequest = () => {
-		refetch();
-	};
 
 	useEffect(() => {
 		cancelRequestData?.status === 200 &&
@@ -43,7 +33,8 @@ const ItemCancelRequest = ({
 				showConfirmButton: false,
 				timer: 1500,
 			});
-	}, [cancelRequestData]);
+		cancelRequestData?.status === 200 && refetch();
+	}, [cancelRequestData, refetch]);
 
 	return (
 		<div className="py-2 border-y flex items-center justify-between md:py-4">
@@ -68,7 +59,6 @@ const ItemCancelRequest = ({
 				<IconButton
 					onClick={() => {
 						handleCancelRequest(idFriend);
-						handleRefetchListRequest();
 					}}
 				>
 					<HighlightOffSharpIcon
