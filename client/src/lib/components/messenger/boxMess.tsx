@@ -175,15 +175,13 @@ const BoxMess = () => {
   useEffect(() => {
     if (id) {
       socket.emit("joinchat", { user_id: user?.user?._id, room: id });
+      socket.on("message", async (data: any) => {
+        setLoad(true);
+      });
     }
-  }, [id, socket, user?.user?._id]);
+  }, [id, socket, user?.user?._id, setLoad]);
 
-  // declare message
-  useEffect(() => {
-    socket.on("message", async (data: any) => {
-      data && setLoad(true);
-    });
-  }, [socket]);
+  console.log(load)
 
   // fetch message when load is true
   useEffect(() => {
