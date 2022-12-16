@@ -99,9 +99,9 @@ const toggleDialogSuggestionsSlice = createSlice({
 });
 
 const store = configureStore({
-  // middleware: getDefaultMiddleware({
-  // 	serializableCheck: false,
-  //   }),
+  middleware: getDefaultMiddleware({
+  	serializableCheck: false,
+    }),
   reducer: {
     isShowInfo: showInfoSlice.reducer,
     isChangePass: isChangePassSlice.reducer,
