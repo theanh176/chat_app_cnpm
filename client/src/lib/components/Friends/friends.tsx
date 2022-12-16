@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Tab, TextField } from "@mui/material";
@@ -24,8 +24,8 @@ import {
 	toggleDialogListFriend,
 	toggleDialogSuggestions,
 } from "../../../store";
-import DialogListFriend from "../DialogIogListFriend/dialogListFriend";
 import DialogChannel from "../DialogChannel/dialogChannel";
+import DialogListFriend from "../DialogIogListFriend/dialogListFriend";
 import DialogSuggestion from "../DialogSuggestion/dialogSuggestion";
 import ItemCancelRequest from "./itemCancelRequest";
 
@@ -216,19 +216,23 @@ const FriendRequest = () => {
 	const { isMobile } = useBreakPoint();
 	const dispatch = useDispatch();
 
-	const { listRequestData, loadListRequest } = useListRequest();
+	const { listRequestData, loadListRequest, refetch } = useListRequest();
 
 	//get data in local storage
 	const user = JSON.parse(localStorage.getItem("user") || "{}");
 
 	const listRequest = listRequestData?.filter(
-		(item: any) =>
-			item?.status === 0
+		(item: any) => item?.status === 0
 	);
 
 	const handleShowDialogSuggestion = () => {
 		dispatch(toggleDialogSuggestions());
 	};
+
+	// const hanleRefetch = () => {
+	// 	console.log(1);
+	// 	refetch();
+	// };
 
 	return (
 		<div className="flex flex-col p-4 h-full">
@@ -267,6 +271,7 @@ const FriendRequest = () => {
 								avatar={item?.recever?.avatar?.link}
 								idFriend={item?._id}
 								_id={item?._id}
+								// handleRefetch={hanleRefetch}
 							/>
 						)
 					)

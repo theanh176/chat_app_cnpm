@@ -18,7 +18,7 @@ const Main = () => {
   useEffect(() => {
     const setInfoSocket = async () => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
-      const socket = io("http://localhost:8088");
+      const socket = io("https://backendchatapp-production.up.railway.app");
       await dispatch(setSocket(socket));
       if (user?.user?._id) {
         socket.emit("userJoin", {
