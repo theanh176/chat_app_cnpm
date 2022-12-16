@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-	baseURL: "http://localhost:8088",
+	baseURL: "https://backendchatapp-production.up.railway.app",
 });
 
 export const get = async (path, options = {}) => {

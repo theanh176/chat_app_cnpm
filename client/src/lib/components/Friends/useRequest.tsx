@@ -6,6 +6,7 @@ import {
   RejectRequest,
   CancelRequest,
   SendRequest,
+  DeleteFriend,
 } from "../../../api/requests";
 
 export const useListRequest = () => {
@@ -13,7 +14,9 @@ export const useListRequest = () => {
     data: listRequestData,
     isLoading: loadListRequest,
     refetch,
-  } = useQuery("request", GetListRequest);
+  } = useQuery("request", GetListRequest,{
+    refetchOnWindowFocus: false,
+  });
 
   return {
     listRequestData,
@@ -103,6 +106,27 @@ export const useSendRequest = () => {
     sendRequestData,
     loadingSendRequest,
     handleSendRequest,
+  };
+}
+
+export const useDeleteFriend = () => {
+  const {
+    data: deleteFriendData,
+    mutate: deleteFriend,
+    isLoading: loadingDeleteFriend,
+  } = useMutation(DeleteFriend);
+
+  const handleDeleteFriend = useCallback(
+    async (idFriend: any) => {
+      await deleteFriend(idFriend);
+    },
+    [deleteFriend]
+  );
+
+  return {
+    deleteFriendData,
+    loadingDeleteFriend,
+    handleDeleteFriend,
   };
 }
 

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useMutation, useQuery } from "react-query";
-import { AddMemberToChannel, CreateChannel, GetMyChannel } from "../../../api/channelApi";
+import { AddMemberToChannel, CreateChannel, GetMyChannel, LeaveChannel } from "../../../api/channelApi";
 
 export const useChannel = () => {
 	const { data: myChannelData, isLoading: loadingMyChannel } = useQuery(
@@ -55,3 +55,25 @@ export const useAddChannel = () => {
 		addChannelData,
 	};
 };
+
+export const useLeaveChannel = () => {
+	const {
+		data: leaveChannelData,
+		mutate: leaveChannel,
+		isLoading: loadingLeaveChannel,
+	} = useMutation(LeaveChannel);
+
+	const handleLeaveChannel = useCallback(
+		async (id: any, data: any) => {
+			await leaveChannel(id, data);
+		},
+		[leaveChannel]
+	);
+
+	return {
+		handleLeaveChannel,
+		loadingLeaveChannel,
+		leaveChannelData,
+	};
+}
+
