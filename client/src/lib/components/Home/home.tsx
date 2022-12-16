@@ -1,4 +1,3 @@
-import React from "react";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -12,7 +11,6 @@ const Home = () => {
 
   const location = useLocation();
   const path = location.pathname;
-
   const isShowInfo = useSelector((state: any) => state.isShowInfo.isShowInfo);
 
   const HomeMobile = () => {

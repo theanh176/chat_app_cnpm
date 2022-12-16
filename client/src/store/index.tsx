@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
+import { createSlice, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 const initialState = {
 	isShowInfo: false,
@@ -11,6 +11,7 @@ const initialState = {
 	toggleDialogListFriend: {
 		isShow: false,
 	},
+	socket: {},
 };
 
 const showInfoSlice = createSlice({
@@ -54,12 +55,26 @@ const toggleDialogListFriendSlice = createSlice({
 	},
 });
 
+const socketSlice = createSlice({
+	name: "socket",
+	initialState,
+	reducers: {
+		setSocket: (state, action) => {
+			state.socket = action.payload;
+		}
+	},
+});
+
 const store = configureStore({
+	// middleware: getDefaultMiddleware({
+	// 	serializableCheck: false,
+	//   }),
 	reducer: {
 		isShowInfo: showInfoSlice.reducer,
 		isChangePass: isChangePassSlice.reducer,
 		toggleDialogInfo: toggleDialogInfoSlice.reducer,
 		toggleDialogListFriend: toggleDialogListFriendSlice.reducer,
+		socket: socketSlice.reducer,
 	},
 });
 
@@ -67,5 +82,6 @@ export const { toggleInfo } = showInfoSlice.actions;
 export const { isChangePass } = isChangePassSlice.actions;
 export const { toggleDialogInfo } = toggleDialogInfoSlice.actions;
 export const { toggleDialogListFriend } = toggleDialogListFriendSlice.actions;
+export const { setSocket } = socketSlice.actions;
 
 export default store;
