@@ -19,14 +19,14 @@ const DialogInfo = () => {
     (state: any) => state.toggleDialogInfo.toggleDialogInfo
   );
 
-  const { dataFriend } = useDialogInfo(_id);
+  const { dataFriend, idChannel } = useDialogInfo(_id);
 
   const formatDays = (day: any) => {
     return dayjs(day).format("DD/MM/YYYY");
   };
 
   const handleChat = () => {
-    navigate(`/messenger/${_id}`);
+    navigate(`/messenger/${idChannel}`);
   };
 
   const HeaderUser = () => {

@@ -14,9 +14,7 @@ import { SendMessage } from "../../../api/messageApi";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
-interface IFormInput {
-  content: string;
-}
+import SelectIcon from "../../../assets/icons/select.svg";
 
 interface IMessage {
   isuser: boolean;
@@ -79,14 +77,6 @@ const FormChat = () => {
           />
         )}
       />
-      {/* <B type="submit">
-        <SendRoundedIcon
-          classes={{
-            root: "text-primary",
-          }}
-          fontSize={isMobile ? "medium" : "large"}
-        />
-      </B> */}
       <IconButton type="submit">
         <SendRoundedIcon
           classes={{
@@ -183,8 +173,6 @@ const BoxMess = () => {
     };
   }, [id, socket, user?.user?._id, setLoad]);
 
-  console.log(load);
-
   // fetch message when load is true
   useEffect(() => {
     if (load) {
@@ -213,7 +201,7 @@ const BoxMess = () => {
           )}
           <img
             src={
-              ListUserOnChannel?.length === 2
+              ListUserOnChannel?.length === 2 && infoParner[0]?.avatar
                 ? infoParner[0]?.avatar
                 : AvatarDefaultIcon
             }
@@ -261,11 +249,28 @@ const BoxMess = () => {
     );
   };
 
+  const EmptyScreen = () => {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <img src={SelectIcon} alt="empty" className='w-[20%] mt-20'/>
+        <p className="text-2xl font-bold mt-10">
+          Please select the person to message
+        </p>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white grid grid-rows-[auto,1fr,auto] w-full rounded-xl p-4 h-[calc(100vh-140px)] md:h-[calc(100vh-100px)] md:mr-4">
-      <HeaderBox />
-      <ChatArea />
-      <BottomBox />
+      {id ? (
+        <>
+          <HeaderBox />
+          <ChatArea />
+          <BottomBox />
+        </>
+      ) : (
+        <EmptyScreen />
+      )}
     </div>
   );
 };

@@ -7,8 +7,9 @@ const GetInfoFiend = (_id: string) =>{
     );
 
   const dataFriend = data?.data;
+  const idChannel = data?.channel;
 
-  return { dataFriend, isLoading, error };
+  return { dataFriend, isLoading, error, idChannel };
 };
 
 export default GetInfoFiend;
