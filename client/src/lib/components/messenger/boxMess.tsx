@@ -1,17 +1,18 @@
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { TextField, Button, IconButton } from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleInfo } from "../../../store";
 import useBoxChat from "./useBoxChat";
 import Loading from "../Loading/loading";
-import useSendMess from "./useSendMess";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import { SendMessage } from "../../../api/messageApi";
 
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
-import CollectionsRoundedIcon from "@mui/icons-material/CollectionsRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 interface IFormInput {
   content: string;
@@ -29,21 +30,37 @@ interface IBoxMess {
   createdAt: string;
 }
 
+type FormValues = {
+  content: string;
+  id: string;
+};
+
 const FormChat = () => {
   const { isMobile } = useBreakPoint();
   const { id } = useParams();
-  const { handleSendMessage } = useSendMess();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       content: "",
-      file: "",
-      id: id
+      id: id,
     },
-  });  
+  });
+
+  const { mutate } = useMutation(SendMessage, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  const socket = useSelector((state: any) => state.socket.socket);
+
+  const handleSendMess = (data: any) => {
+    socket.emit("sendMessage", { message: data?.content, room: id });
+    mutate(data);
+  };
 
   return (
     <form
-      onSubmit={handleSubmit(handleSendMessage)}
+      onSubmit={handleSubmit(handleSendMess)}
       className="flex w-full items-center md:gap-4"
     >
       <Controller
@@ -66,6 +83,14 @@ const FormChat = () => {
           />
         )}
       />
+      {/* <B type="submit">
+        <SendRoundedIcon
+          classes={{
+            root: "text-primary",
+          }}
+          fontSize={isMobile ? "medium" : "large"}
+        />
+      </B> */}
       <IconButton type="submit">
         <SendRoundedIcon
           classes={{
@@ -121,12 +146,20 @@ const BoxMess = () => {
 
   const dispatch = useDispatch();
 
-  const { infoChannelData, loadingInfoChannel, messageData, loadingMessage } =
-    useBoxChat(id ? id : "");
-  const ListUserOnChannel = infoChannelData?.data?.user;
+  const socket = useSelector((state: any) => state.socket.socket);
 
-  //get data in sessionStorage
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const [load, setLoad] = useState(false);
+
+  const {
+    infoChannelData,
+    loadingInfoChannel,
+    messageData,
+    loadingMessage,
+    refetch,
+  } = useBoxChat(id ? id : "");
+  const ListUserOnChannel = infoChannelData?.data?.user;
 
   //get info partner
   const infoParner = ListUserOnChannel?.filter(
@@ -137,6 +170,28 @@ const BoxMess = () => {
   const handleIsUser = (idCheck: string) => {
     return idCheck === user?.user?._id;
   };
+
+  // declare joinchat on socket
+  useEffect(() => {
+    if (id) {
+      socket.emit("joinchat", { user_id: user?.user?._id, room: id });
+    }
+  }, [id, socket, user?.user?._id]);
+
+  // declare message
+  useEffect(() => {
+    socket.on("message", async (data: any) => {
+      data && setLoad(true);
+    });
+  }, [socket]);
+
+  // fetch message when load is true
+  useEffect(() => {
+    if (load) {
+      refetch();
+      setLoad(false);
+    }
+  }, [load, refetch]);
 
   const HeaderBox = () => {
     const handleBack = () => {

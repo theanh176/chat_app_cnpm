@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { GetInfoChannel } from "../../../api/channelApi";
 import { GetMessageOnChannel } from "../../../api/messageApi";
 
-const useBoxChat = (id: any) => {
+const useBoxChat = (id: string) => {
   const {
     data: infoChannelData,
     isLoading: loadingInfoChannel,
@@ -11,14 +11,18 @@ const useBoxChat = (id: any) => {
     enabled: !!id,
   });
 
-  // get message on channel
-    const { data: messageData, isLoading: loadingMessage } = useQuery(
-        "getMessageOnChannel",
-        () => GetMessageOnChannel(id),
-        {
-            enabled: !!id,
-        }
-    );
+  // get message on channel and fetch new message
+  const { data: messageData, isLoading: loadingMessage, refetch } = useQuery(
+    "getMessageOnChannel",
+    () => GetMessageOnChannel(id),
+    {
+      enabled: !!id,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+
+
 
   return {
     infoChannelData,
@@ -26,6 +30,7 @@ const useBoxChat = (id: any) => {
     isError,
     messageData,
     loadingMessage,
+    refetch,
   };
 };
 
