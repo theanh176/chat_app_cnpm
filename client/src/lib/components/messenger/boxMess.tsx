@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleInfo } from "../../../store";
 import useBoxChat from "./useBoxChat";
 import Loading from "../Loading/loading";
-import useSendMessage from "./useSendMess";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { SendMessage } from "../../../api/messageApi";
