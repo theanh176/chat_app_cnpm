@@ -22,7 +22,6 @@ const DialogChannel = () => {
   const { infoChannelData } = useBoxChat(_id ? _id : "");
 
   const data = infoChannelData?.data;
-  console.log(data);
 
   const formatDays = (day: any) => {
     return dayjs(day).format("DD/MM/YYYY");

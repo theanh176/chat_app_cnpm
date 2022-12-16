@@ -1,6 +1,11 @@
 import { useCallback } from "react";
 import { useMutation, useQuery } from "react-query";
-import { AddMemberToChannel, CreateChannel, GetMyChannel, LeaveChannel } from "../../../api/channelApi";
+import {
+	AddMemberToChannel,
+	CreateChannel,
+	GetMyChannel,
+	LeaveChannel,
+} from "../../../api/channelApi";
 
 export const useChannel = () => {
 	const { data: myChannelData, isLoading: loadingMyChannel } = useQuery(
@@ -43,8 +48,8 @@ export const useAddChannel = () => {
 	} = useMutation(AddMemberToChannel);
 
 	const handleAddChannel = useCallback(
-		async (id: any, data: any) => {
-			await addChannel(id, data);
+		async (dataAdd: any) => {
+			await addChannel(dataAdd);
 		},
 		[addChannel]
 	);
@@ -64,8 +69,8 @@ export const useLeaveChannel = () => {
 	} = useMutation(LeaveChannel);
 
 	const handleLeaveChannel = useCallback(
-		async (id: any, data: any) => {
-			await leaveChannel(id, data);
+		async (id: any) => {
+			await leaveChannel(id);
 		},
 		[leaveChannel]
 	);
@@ -75,5 +80,4 @@ export const useLeaveChannel = () => {
 		loadingLeaveChannel,
 		leaveChannelData,
 	};
-}
-
+};

@@ -29,7 +29,7 @@ const ItemFriend = ({ name, avatar, idFriend }: IFriend) => {
 			Swal.fire({
 				position: "center",
 				icon: "success",
-				title: "Huỷ lời mời kết bạn thành công",
+				title: "Huỷ bạn bè thành công",
 				showConfirmButton: false,
 				timer: 1500,
 			});
