@@ -28,6 +28,7 @@ import DialogChannel from "../DialogChannel/dialogChannel";
 import DialogListFriend from "../DialogIogListFriend/dialogListFriend";
 import DialogSuggestion from "../DialogSuggestion/dialogSuggestion";
 import ItemCancelRequest from "./itemCancelRequest";
+import DialogAddFriendChannel from "../DialogChannel/dialogAddFriendChannel";
 
 interface IFormInput {
 	search: string;
@@ -238,7 +239,7 @@ const FriendRequest = () => {
 		<div className="flex flex-col p-4 h-full">
 			{loadListRequest && <Loading />}
 			<div className="flex gap-4 items-center mb-3 md:justify-center">
-				<div onClick={handleShowDialogSuggestion} aria-hidden='true'>
+				<div onClick={handleShowDialogSuggestion} aria-hidden="true">
 					<PersonAddIcon
 						classes={{
 							root: "text-primary-icon",
@@ -296,7 +297,7 @@ const Group = () => {
 		<div className="flex flex-col p-4 h-full">
 			{loadingMyChannel && <Loading />}
 			<div className="flex gap-4 items-center mb-3 md:justify-center">
-				<div onClick={handleShowDialogListFriend} aria-hidden='true'>
+				<div onClick={handleShowDialogListFriend} aria-hidden="true">
 					<GroupAddIcon
 						classes={{
 							root: "text-primary-icon",
@@ -322,6 +323,7 @@ const Group = () => {
 			</div>
 			<DialogListFriend />
 			<DialogChannel />
+			<DialogAddFriendChannel />
 		</div>
 	);
 };
