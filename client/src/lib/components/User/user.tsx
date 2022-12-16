@@ -116,7 +116,11 @@ const User = () => {
           </Button>
           <Button className="w-full">
             <PasswordRoundedIcon />
-            <p className="ml-1" onClick={handleClickChangePass}>
+            <p
+              className="ml-1"
+              onClick={handleClickChangePass}
+              aria-hidden="true"
+            >
               Change Password
             </p>
           </Button>

@@ -74,6 +74,7 @@ const ItemFriend = ({ name, avatar, idFriend }: IFriend) => {
         <div
           className="flex items-center w-full gap-3 md:gap-4 cursor-pointer"
           onClick={handleShowDialogInfo}
+          aria-hidden='true'
         >
           <img
             src={avatar ? avatar : AvatarDefaultIcon}
