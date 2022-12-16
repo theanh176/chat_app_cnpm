@@ -45,11 +45,7 @@ const FormChat = () => {
     },
   });
 
-  const { mutate } = useMutation(SendMessage, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
+  const { mutate } = useMutation(SendMessage, {});
 
   const socket = useSelector((state: any) => state.socket.socket);
 
@@ -173,15 +169,21 @@ const BoxMess = () => {
 
   // declare joinchat on socket
   useEffect(() => {
-    if (id) {
-      socket.emit("joinchat", { user_id: user?.user?._id, room: id });
-      socket.on("message", async (data: any) => {
-        setLoad(true);
-      });
-    }
+    const FetchData = async () => {
+      if (id) {
+        socket.emit("joinchat", { user_id: user?.user?._id, room: id });
+        socket.on("message", async (data: any) => {
+          await setLoad(true);
+        });
+      }
+    };
+    FetchData();
+    return () => {
+      if (id) socket.emit("leaveChat", { room: id });
+    };
   }, [id, socket, user?.user?._id, setLoad]);
 
-  console.log(load)
+  console.log(load);
 
   // fetch message when load is true
   useEffect(() => {
