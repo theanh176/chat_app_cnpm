@@ -5,10 +5,14 @@ const GetListSuggestions = () => {
 	const {
 		data: listSuggestions,
 		isLoading: loadingListSuggestions,
-	} = useQuery("listSuggestions", GetMySuggestions);
+		refetch: refetchListSuggestions,
+	} = useQuery("listSuggestions", GetMySuggestions,{
+		refetchOnWindowFocus: false,
+	});
 	return {
 		listSuggestions,
 		loadingListSuggestions,
+		refetchListSuggestions,
 	};
 };
 

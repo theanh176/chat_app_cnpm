@@ -7,7 +7,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import ItemFriend from "../DialogIogListFriend/itemFriend";
-import { useAddChannel } from "../Friends/useChannel";
+import { useAddChannel, useChannel } from "../Friends/useChannel";
 import useFriends from "../Friends/useFriends";
 import Loading from "../Loading/loading";
 import WarningEmpty from "../WarningEmpty/warningEmpty";
@@ -28,9 +28,6 @@ const DialogAddFriendChannel = () => {
 	const { infoChannelData } = useBoxChat(_id ? _id : "");
 
 	const dataInfoChannel = infoChannelData?.data;
-	// console.log(dataInfoChannel);
-
-	// console.log(myChannelData);
 
 	const { handleAddChannel, loadingAddChannel, addChannelData } =
 		useAddChannel();
@@ -40,7 +37,7 @@ const DialogAddFriendChannel = () => {
 			Swal.fire({
 				position: "center",
 				icon: "success",
-				title: "Thêm bạn vào nhóm thành công",
+				title: "Add friend success",
 				showConfirmButton: false,
 				timer: 1500,
 			});
@@ -49,7 +46,7 @@ const DialogAddFriendChannel = () => {
 	const handleAddFriendChannel = () => {
 		// tạo nhóm
 		const groupData = {
-			listId : { list_user: isIdUser },
+			listId: { list_user: isIdUser },
 			_id: _id,
 		};
 		handleAddChannel(groupData);

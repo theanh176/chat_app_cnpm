@@ -6,7 +6,7 @@ import { toggleDialogListFriend } from "../../../store";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useCreateChannel } from "../Friends/useChannel";
+import { useChannel, useCreateChannel } from "../Friends/useChannel";
 import useFriends from "../Friends/useFriends";
 import Loading from "../Loading/loading";
 import WarningEmpty from "../WarningEmpty/warningEmpty";
@@ -21,6 +21,9 @@ const DialogListFriend = () => {
 	const { isShow } = useSelector(
 		(state: any) => state.toggleDialogListFriend.toggleDialogListFriend
 	);
+
+	const { refetch } = useChannel();
+
 	const { handleCreateChannel, loadingCreateChannel, createChannelData } =
 		useCreateChannel();
 
@@ -29,11 +32,12 @@ const DialogListFriend = () => {
 			Swal.fire({
 				position: "center",
 				icon: "success",
-				title: "Tạo Nhóm Thành Công",
+				title: "Create group success",
 				showConfirmButton: false,
 				timer: 1500,
 			});
-	}, [createChannelData]);
+		createChannelData?.status === 200 && refetch();
+	}, [createChannelData, refetch]);
 
 	const handleCreateGroup = () => {
 		// tạo nhóm
@@ -51,11 +55,14 @@ const DialogListFriend = () => {
 					<p className="font-bold text-xl text-center md:text-3xl pt-4">
 						Create Group
 					</p>
-					<div className="absolute top-4 right-4" onClick={() => dispatch(toggleDialogListFriend())} aria-hidden='true'>
+					<div
+						className="absolute top-4 right-4"
+						onClick={() => dispatch(toggleDialogListFriend())}
+						aria-hidden="true"
+					>
 						<CloseRoundedIcon
 							className="cursor-pointer text-black"
 							fontSize={isMobile ? "medium" : "large"}
-							
 						/>
 					</div>
 				</div>
