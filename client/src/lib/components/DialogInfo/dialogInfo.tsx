@@ -1,4 +1,3 @@
-
 import { Dialog } from "@mui/material";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +27,7 @@ const DialogInfo = () => {
 
   const handleChat = () => {
     navigate(`/messenger/${_id}`);
-  }
+  };
 
   const HeaderUser = () => {
     return (
@@ -45,11 +44,14 @@ const DialogInfo = () => {
               className="w-[120px] aspect-square object-cover rounded-full mx-auto border-4 border-white md:w-[200px] md:border-8"
             />
           </div>
-          <div className="absolute top-4 right-4">
+          <div
+            className="absolute top-4 right-4"
+            onClick={() => dispatch(toggleDialogInfo({ idFriend: "" }))}
+            aria-hidden="true"
+          >
             <CloseRoundedIcon
               className="cursor-pointer text-white"
-              fontSize={isMobile ? 'medium' : 'large'}
-              onClick={() => dispatch(toggleDialogInfo({ idFriend: "" }))}
+              fontSize={isMobile ? "medium" : "large"}
             />
           </div>
         </div>
@@ -105,7 +107,10 @@ const DialogInfo = () => {
       <HeaderUser />
       <BodyUser />
       <div className="flex justify-center gap-4 mt-10 mx-4 bg-">
-        <button className="bg-primary-icon text-white px-4 py-2 rounded-xl w-full flex items-center justify-center md:max-w-[300px]" onClick={handleChat}>
+        <button
+          className="bg-primary-icon text-white px-4 py-2 rounded-xl w-full flex items-center justify-center md:max-w-[300px]"
+          onClick={handleChat}
+        >
           <span className="mr-2 font-bold md:text-xl">Chat</span>
           <MapsUgcRoundedIcon />
         </button>

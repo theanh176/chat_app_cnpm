@@ -76,6 +76,7 @@ const ItemChannel = ({ name, avatar, idChannel }: IChannel) => {
 			<div
 				className="flex items-center gap-3 md:gap-4 cursor-pointer"
 				onClick={handleShowDialogChannel}
+				aria-hidden='true'
 			>
 				<img
 					src={avatar ? avatar : AvatarDefaultIcon}

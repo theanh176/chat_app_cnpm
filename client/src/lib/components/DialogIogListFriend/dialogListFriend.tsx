@@ -51,11 +51,11 @@ const DialogListFriend = () => {
 					<p className="font-bold text-xl text-center md:text-3xl pt-4">
 						Create Group
 					</p>
-					<div className="absolute top-4 right-4">
+					<div className="absolute top-4 right-4" onClick={() => dispatch(toggleDialogListFriend())} aria-hidden='true'>
 						<CloseRoundedIcon
 							className="cursor-pointer text-black"
 							fontSize={isMobile ? "medium" : "large"}
-							onClick={() => dispatch(toggleDialogListFriend())}
+							
 						/>
 					</div>
 				</div>
