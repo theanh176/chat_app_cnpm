@@ -56,7 +56,7 @@ export const RejectRequest = async (id) => {
     }
 }
 
-export const DeleteRequest = async (id) => {
+export const CancelRequest = async (id) => {
     // get the access token from the cookie
     const access_token = Cookies.get("access_token");
     // set the authorization header
@@ -68,6 +68,26 @@ export const DeleteRequest = async (id) => {
     // delete the request
     try {
         const response = await request.del(`request/cancel/${id}`, options);
+        return response;
+    }
+    catch (error) {
+        return error?.response;
+    }
+}
+
+// Gửi yêu cầu kết bạn
+export const SendRequest = async (data) => {
+    // get the access token from the cookie
+    const access_token = Cookies.get("access_token");
+    // set the authorization header
+    const options = {
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+    };
+    // post the request
+    try {
+        const response = await request.post('request/send', data, options);
         return response;
     }
     catch (error) {

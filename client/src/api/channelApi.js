@@ -52,3 +52,21 @@ export const CreateChannel = async (data) => {
     return error?.response;
   }
 }
+
+// Thêm thành viên vào channel
+export const AddMemberToChannel = async (id, data) => {
+  // get the access token from the cookie
+  const access_token = Cookies.get("access_token");
+  // set the authorization header
+  const options = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+  try {
+    const response = await request.post(`channel/add/${id}`, data, options);
+    return response;
+  } catch (error) {
+    return error?.response;
+  }
+}
