@@ -1,13 +1,13 @@
 import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { TextField, IconButton, Popover } from "@mui/material";
+import { TextField, IconButton, Popover, Fab } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleInfo } from "../../../store";
 import useBoxChat from "./useBoxChat";
 import Loading from "../Loading/loading";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
 import { SendMessage } from "../../../api/messageApi";
 import useDialogInfo from "../DialogInfo/useDialogInfo";
@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import useDeleteMess from "./useDeleteMess";
 
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import SelectIcon from "../../../assets/icons/select.svg";
@@ -99,13 +100,7 @@ const FormChat = () => {
   );
 };
 
-const ItemMess = ({
-  isuser,
-  content,
-  createdAt,
-  userId,
-  idMess,
-}: IMessage) => {
+const ItemMess = ({ isuser, content, createdAt, userId, idMess }: IMessage) => {
   const { dataFriend } = useDialogInfo(userId);
 
   const [isHovering, setIsHovering] = useState(false);
@@ -293,23 +288,78 @@ const BoxMess = () => {
   };
 
   const ChatArea = () => {
+    const messageEl = useRef(document.createElement("div"));
+    const [pos, setPos] = useState(false);
+
+    // useEffect(() => {
+    // 	if (messageEl) {
+    // 		messageEl.current.addEventListener(
+    // 			"DOMNodeInserted",
+    // 			(event: { currentTarget: any }) => {
+    // 				const { currentTarget: target } = event;
+    // 				target.scroll({
+    // 					top: target.scrollHeight,
+    // 					behavior: "smooth",
+    // 				});
+    // 			}
+    // 		);
+    // 	}
+    // }, []);
+    useEffect(() => {
+      const temp: any = messageEl.current;
+      temp.addEventListener("scroll", handleScroll);
+      return () => temp.removeEventListener("scroll", handleScroll);
+    });
+
+    useEffect(() => {
+      messageEl.current.scrollTo(0, messageEl.current.scrollHeight);
+    }, []);
+
+    const handleBottom = () => {
+      messageEl.current.scrollTop = messageEl.current.scrollHeight;
+      setPos(false);
+    };
+
+    const handleScroll = () => {
+      if (messageEl.current.scrollTop < 100) {
+        if (!pos) setPos(true);
+      } else {
+        if (pos) setPos(false);
+      }
+    };
+
     return (
-      <div className="h-full overflow-y-auto pt-4 flex flex-col justify-end">
-        {loadingMessage && <Loading />}
-        {messageData?.data?.map(
-          (item: IBoxMess, index: number) =>
-            item?.status === 0 && (
-              <ItemMess
-                key={index}
-                isuser={handleIsUser(item?.user)}
-                content={item.content}
-                createdAt={item.createdAt}
-                userId={item.user}
-                idMess={item._id}
-              />
-            )
-        )}
-      </div>
+      <>
+        <div ref={messageEl} className="h-full overflow-y-auto pt-4">
+          {loadingMessage && <Loading />}
+          {messageData?.data?.map(
+            (item: IBoxMess, index: number) =>
+              item?.status === 0 && (
+                <ItemMess
+                  key={index}
+                  isuser={handleIsUser(item?.user)}
+                  content={item.content}
+                  createdAt={item.createdAt}
+                  userId={item.user}
+                  idMess={item._id}
+                />
+              )
+          )}
+        </div>
+        <Fab
+          style={{
+            marginLeft: 8,
+            position: "fixed",
+            bottom: 120,
+            display: pos ? "block" : "none",
+          }}
+          size="small"
+          aria-label="scroll back to top"
+          onClick={handleBottom}
+        >
+          <KeyboardArrowDownIcon />
+        </Fab>
+      </>
     );
   };
 
