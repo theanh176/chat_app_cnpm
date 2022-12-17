@@ -15,13 +15,13 @@ const DialogSuggestion = () => {
 	const dispatch = useDispatch();
 	const [isIdUser, setIsIdUser] = useState([] as string[]);
 
-	const { notFriend, loadingNotFriend, refetchNotFriend } =
+	const { notFriend, refetchNotFriend } =
 		GetNotFriendList();
 
-	const { sendRequestData, loadingSendRequest, handleSendRequest } =
+	const { sendRequestData, handleSendRequest } =
 		useSendRequest();
 
-	const { listRequestData, loadListRequest, refetch } = useListRequest();
+	const { listRequestData, refetch } = useListRequest();
 
 	const handleClose = () => {
 		dispatch(toggleDialogSuggestions());

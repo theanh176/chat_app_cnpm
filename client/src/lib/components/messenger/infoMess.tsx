@@ -1,23 +1,21 @@
 import { IconButton } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { useBreakPoint } from "../../../hooks/useBreakPoint";
-import { toggleInfo, toggleDialogInfo } from "../../../store";
-import useBoxChat from "./useBoxChat";
+import { toggleDialogInfo, toggleInfo } from "../../../store";
 import DialogInfo from "../DialogInfo/dialogInfo";
+import useBoxChat from "./useBoxChat";
 
-import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import PermIdentityRoundedIcon from "@mui/icons-material/PermIdentityRounded";
 import PermMediaRoundedIcon from "@mui/icons-material/PermMediaRounded";
-import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import AvatarDefaultIcon from "../../../assets/icons/avatar-default.svg";
 
 const InfoMess = () => {
   const { isMobile } = useBreakPoint();
-
-  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 

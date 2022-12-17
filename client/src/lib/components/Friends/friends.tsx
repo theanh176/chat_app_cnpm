@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { Tab, TextField } from "@mui/material";
+import { Button, Tab, TextField } from "@mui/material";
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import { Controller, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,6 +22,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import SearchIcon from "../../../assets/icons/search_purple.svg";
 import {
 	toggleDialogListFriend,
+	toggleDialogSearch,
 	toggleDialogSuggestions,
 } from "../../../store";
 import DialogChannel from "../DialogChannel/dialogChannel";
@@ -30,6 +31,7 @@ import DialogSuggestion from "../DialogSuggestion/dialogSuggestion";
 import ItemCancelRequest from "./itemCancelRequest";
 import DialogAddFriendChannel from "../DialogChannel/dialogAddFriendChannel";
 import GetListSuggestions from "../DialogSuggestion/useDialogSuggestion";
+import DialogSearch from "../DialogSearch/dialogSearch";
 
 interface IFormInput {
 	search: string;
@@ -190,7 +192,7 @@ const FriendsList = () => {
 				/>
 				<p className="font-bold md:text-xl">Friend List</p>
 			</div>
-			<Form />
+			{/* <Form /> */}
 			<div className="h-full overflow-y-scroll mt-3 mb-[50px] md:px-10">
 				{friendsData?.length < 1 && (
 					<WarningEmpty message="No have friend" />
@@ -228,6 +230,11 @@ const FriendRequest = () => {
 		dispatch(toggleDialogSuggestions());
 	};
 
+	const handleShowDialogSearch = () => {
+		dispatch(toggleDialogSearch());
+		console.log(1);
+	};
+
 	return (
 		<div className="flex flex-col p-4 h-full">
 			{loadListRequest && <Loading />}
@@ -242,6 +249,11 @@ const FriendRequest = () => {
 					/>
 				</div>
 				<p className="font-bold md:text-xl">Friend Request</p>
+			</div>
+			<div className="flex justify-left">
+				<Button>
+					<p onClick={handleShowDialogSearch}>Search User</p>
+				</Button>
 			</div>
 			<div className="h-full overflow-y-scroll mb-[50px] md:px-10">
 				{listRequest?.length < 1 && (
@@ -271,6 +283,7 @@ const FriendRequest = () => {
 				)}
 			</div>
 			<DialogSuggestion />
+			<DialogSearch />
 		</div>
 	);
 };
