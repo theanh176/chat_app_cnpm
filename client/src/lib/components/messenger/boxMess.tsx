@@ -261,7 +261,7 @@ const BoxMess = () => {
           )}
           <img
             src={
-              ListUserOnChannel?.length === 2 && infoParner[0]?.avatar.link
+              ListUserOnChannel?.length === 2 && infoParner[0]?.avatar?.link
                 ? infoParner[0]?.avatar?.link
                 : AvatarDefaultIcon
             }
