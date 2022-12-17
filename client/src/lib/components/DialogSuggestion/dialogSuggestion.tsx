@@ -6,16 +6,17 @@ import { toggleDialogSuggestions } from "../../../store";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useEffect, useState } from "react";
 import ItemFriend from "./itemFriendSuggestion";
-import GetListSuggestions from "./useDialogSuggestion";
 import { useListRequest, useSendRequest } from "../Friends/useRequest";
 import Swal from "sweetalert2";
+import GetNotFriendList from "./useNotFriend";
 
 const DialogSuggestion = () => {
 	const { isMobile } = useBreakPoint();
 	const dispatch = useDispatch();
 	const [isIdUser, setIsIdUser] = useState([] as string[]);
 
-	const { listSuggestions, refetchListSuggestions } = GetListSuggestions();
+	const { notFriend, loadingNotFriend, refetchNotFriend } =
+		GetNotFriendList();
 
 	const { sendRequestData, loadingSendRequest, handleSendRequest } =
 		useSendRequest();
@@ -76,7 +77,7 @@ const DialogSuggestion = () => {
 
 		return (
 			<div className="h-full overflow-y-scroll mt-1 md:px-10">
-				{listSuggestions?.user1?.map(
+				{notFriend?.user?.map(
 					(item: any) =>
 						// Kiểm tra xem user có tồn
 						!listRequestData?.find(
