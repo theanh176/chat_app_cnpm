@@ -57,7 +57,7 @@ const DialogAddFriendChannel = () => {
 			<>
 				<div className="h-[60px]">
 					<p className="font-bold text-xl text-center md:text-3xl pt-4">
-						{dataInfoChannel.name}
+						{dataInfoChannel?.name}
 					</p>
 					<div
 						className="absolute top-4 right-4"
