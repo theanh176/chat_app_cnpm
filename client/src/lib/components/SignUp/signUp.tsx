@@ -266,8 +266,8 @@ const SignUp = () => {
   return (
     <div className="flex">
       <div className={styles.bg}>
-        <p className="text-2xl font-medium">CHÀO MỪNG ĐẾN VỚI</p>
-        <h1 className="text-[44px] font-black">HỌC SIÊU DỄ - EASY LEARN</h1>
+        <p className="text-2xl font-medium">WELCOME TO</p>
+        <h1 className="text-[44px] font-black">APP CHAT</h1>
       </div>
       <div className="w-full px-4 min-h-screen flex flex-col justify-center items-center relative xl:w-[45%] md:pt-10">
         <HeaderForm
