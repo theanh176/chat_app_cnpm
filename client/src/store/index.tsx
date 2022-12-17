@@ -30,6 +30,9 @@ const initialState = {
 	toggleDialogUpdateInfo: {
 		isShow: false,
 	},
+	toggleDialogSearch: {
+		isShow: false,
+	},
 };
 
 const showInfoSlice = createSlice({
@@ -129,6 +132,16 @@ const toggleDialogUpdateInfoSlice = createSlice({
 	},
 });
 
+const toggleDialogSearchSlice = createSlice({
+	name: "toggleDialogSearch",
+	initialState,
+	reducers: {
+		toggleDialogSearch: (state) => {
+			state.toggleDialogSearch.isShow = !state.toggleDialogSearch.isShow;
+		},
+	},
+});
+
 const store = configureStore({
 	middleware: getDefaultMiddleware({
 		serializableCheck: false,
@@ -143,6 +156,7 @@ const store = configureStore({
 		toggleDialogSuggestions: toggleDialogSuggestionsSlice.reducer,
 		toggleDialogAddFriendChannel: toggleDialogAddFriendChannelSlice.reducer,
 		toggleDialogUpdateInfo: toggleDialogUpdateInfoSlice.reducer,
+		toggleDialogSearch: toggleDialogSearchSlice.reducer,
 	},
 });
 
@@ -156,5 +170,6 @@ export const { toggleDialogSuggestions } = toggleDialogSuggestionsSlice.actions;
 export const { toggleDialogAddFriendChannel } =
 	toggleDialogAddFriendChannelSlice.actions;
 export const { toggleDialogUpdateInfo } = toggleDialogUpdateInfoSlice.actions;
+export const { toggleDialogSearch } = toggleDialogSearchSlice.actions;
 
 export default store;

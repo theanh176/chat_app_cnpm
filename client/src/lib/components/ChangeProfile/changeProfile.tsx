@@ -2,30 +2,25 @@ import {
 	Button,
 	FormControl,
 	FormHelperText,
-	IconButton,
-	InputAdornment,
 	InputLabel,
 	MenuItem,
-	OutlinedInput,
 	Select,
-	TextField,
+	TextField
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useBreakPoint } from "../../../hooks/useBreakPoint";
 import Swal from "sweetalert2";
+import { useBreakPoint } from "../../../hooks/useBreakPoint";
 
-import VisibilityOff from "../../../assets/icons/visibility-off.svg";
-import Visibility from "../../../assets/icons/visibility.svg";
 
 import { useDispatch } from "react-redux";
-import useChangeProfile from "./useChangeProfile";
 import Loading from "../Loading/loading";
+import useChangeProfile from "./useChangeProfile";
 
-import { toggleDialogUpdateInfo } from "../../../store";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toggleDialogUpdateInfo } from "../../../store";
 import { GetUser } from "../User/useUser";
 
 interface isShow {
@@ -217,7 +212,7 @@ const Form = ({ handleSubmitForm, isLoading }: IForm) => {
 };
 
 const ChangeInfo = ({ isShow }: isShow) => {
-	const { changeProfileRes, isLoading, error, handleSubmitForm } =
+	const { changeProfileRes, isLoading, handleSubmitForm } =
 		useChangeProfile();
 
 	const dispatch = useDispatch();
