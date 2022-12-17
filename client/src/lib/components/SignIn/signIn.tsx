@@ -198,7 +198,7 @@ const Form = () => {
 
 const SignIn = () => {
 	return (
-		<div className="flex">
+		<div className={styles.hide + " " + "flex"}>
 			<div className={styles.bg}>
 				<p className="text-2xl font-medium">WELCOME TO</p>
 				<h1 className="text-[44px] font-black">APP CHAT</h1>

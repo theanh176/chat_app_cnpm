@@ -20,13 +20,19 @@ import Visibility from "../../../assets/icons/visibility.svg";
 import { useDispatch } from "react-redux";
 import { isChangePass } from "../../../store";
 import useChangePass from "./useChangePass";
+import Loading from "../Loading/loading";
 
 interface isShow {
 	isShow: boolean;
 }
 
-const Form = () => {
-	const { changePassRes, handleSubmitForm } = useChangePass();
+interface IForm {
+	isLoading: boolean;
+	handleSubmitForm: (data: { password: string; newpassword: string }) => void;
+}
+
+const Form = ({ handleSubmitForm, isLoading }: IForm) => {
+	console.log(isLoading);
 	const {
 		control,
 		handleSubmit,
@@ -44,25 +50,7 @@ const Form = () => {
 	}) => {
 		try {
 			handleSubmitForm(data);
-			if (changePassRes.status === 200) {
-				handleClose();
-				Swal.fire({
-					position: "center",
-					icon: "success",
-					title: "Đổi mật khẩu thành công",
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			} else {
-				handleClose();
-				Swal.fire({
-					position: "center",
-					icon: "error",
-					title: "Đổi mật khẩu thất bại",
-					showConfirmButton: false,
-					timer: 1500,
-				});
-			}
+			handleClose();
 		} catch (err) {
 			console.log(err);
 		}
@@ -81,6 +69,7 @@ const Form = () => {
 
 	return (
 		<div className={styles.hide + " " + "w-full max-w-[520px] mt-10"}>
+			{isLoading && <Loading />}
 			<form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
 				<Controller
 					name="password"
@@ -197,6 +186,7 @@ const Form = () => {
 						type="submit"
 						variant="contained"
 						className="w-full"
+						onClick={handleSubmit(onSubmit)}
 					>
 						<p className="md:text-base">Confirm</p>
 					</Button>
@@ -207,6 +197,8 @@ const Form = () => {
 };
 
 const ChangePass = ({ isShow }: isShow) => {
+	const { changePassRes, handleSubmitForm, isLoading } = useChangePass();
+
 	const dispatch = useDispatch();
 
 	const { isMobile } = useBreakPoint();
@@ -214,6 +206,25 @@ const ChangePass = ({ isShow }: isShow) => {
 	const handleClose = () => {
 		dispatch(isChangePass());
 	};
+
+	useEffect(() => {
+		changePassRes?.status === 200 &&
+			Swal.fire({
+				position: "center",
+				icon: "success",
+				title: "Change password success",
+				showConfirmButton: false,
+				timer: 1500,
+			});
+		changePassRes?.status === 400 &&
+			Swal.fire({
+				position: "center",
+				icon: "error",
+				title: "Change password error",
+				showConfirmButton: false,
+				timer: 1500,
+			});
+	}, [changePassRes]);
 
 	return (
 		<Dialog
@@ -231,7 +242,7 @@ const ChangePass = ({ isShow }: isShow) => {
 				To change your password, please enter your current password and
 				a new password!
 			</div>
-			<Form />
+			<Form handleSubmitForm={handleSubmitForm} isLoading={isLoading} />
 		</Dialog>
 	);
 };

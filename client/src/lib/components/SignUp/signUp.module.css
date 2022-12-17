@@ -17,3 +17,8 @@
     }
 }
 
+/* hide Edge's additional password */
+.hide ::-ms-reveal{
+	display: none;
+}
+
