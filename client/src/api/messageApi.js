@@ -37,7 +37,7 @@ export const SendMessage = async (data) => {
   }
 };
 
-export const RemoveMessage = async (id) => {
+export const RemoveMessage = async (idMess) => {
   // get the access token from the cookie
   const access_token = Cookies.get("access_token");
   // set the authorization header
@@ -46,8 +46,11 @@ export const RemoveMessage = async (id) => {
       Authorization: `Bearer ${access_token}`,
     },
   };
+
+  const id = idMess.idMess
+
   try {
-    const response = await request.patch(`message/remove/${id}`, options);
+    const response = await request.patch(`message/remove/${id}`, {}, options);
     return response;
   } catch (error) {
     return error?.response;
