@@ -27,6 +27,9 @@ const initialState = {
 		isShow: false,
 		_id: "",
 	},
+	toggleDialogUpdateInfo: {
+		isShow: false,
+	},
 };
 
 const showInfoSlice = createSlice({
@@ -104,15 +107,26 @@ const toggleDialogSuggestionsSlice = createSlice({
 });
 
 const toggleDialogAddFriendChannelSlice = createSlice({
-  name: "toggleDialogAddFriendChannel",
-  initialState,
-  reducers: {
-    toggleDialogAddFriendChannel: (state, action) => {
-      state.toggleDialogAddFriendChannel.isShow =
-        !state.toggleDialogAddFriendChannel.isShow;
-      state.toggleDialogAddFriendChannel._id = action.payload.idChannel;
-    },
-  },
+	name: "toggleDialogAddFriendChannel",
+	initialState,
+	reducers: {
+		toggleDialogAddFriendChannel: (state, action) => {
+			state.toggleDialogAddFriendChannel.isShow =
+				!state.toggleDialogAddFriendChannel.isShow;
+			state.toggleDialogAddFriendChannel._id = action.payload.idChannel;
+		},
+	},
+});
+
+const toggleDialogUpdateInfoSlice = createSlice({
+	name: "toggleDialogUpdateInfo",
+	initialState,
+	reducers: {
+		toggleDialogUpdateInfo: (state) => {
+			state.toggleDialogUpdateInfo.isShow =
+				!state.toggleDialogUpdateInfo.isShow;
+		},
+	},
 });
 
 const store = configureStore({
@@ -127,7 +141,8 @@ const store = configureStore({
 		socket: socketSlice.reducer,
 		toggleDialogChannel: toggleDialogChannelSlice.reducer,
 		toggleDialogSuggestions: toggleDialogSuggestionsSlice.reducer,
-    toggleDialogAddFriendChannel: toggleDialogAddFriendChannelSlice.reducer,
+		toggleDialogAddFriendChannel: toggleDialogAddFriendChannelSlice.reducer,
+		toggleDialogUpdateInfo: toggleDialogUpdateInfoSlice.reducer,
 	},
 });
 
@@ -138,6 +153,8 @@ export const { toggleDialogListFriend } = toggleDialogListFriendSlice.actions;
 export const { setSocket } = socketSlice.actions;
 export const { toggleDialogChannel } = toggleDialogChannelSlice.actions;
 export const { toggleDialogSuggestions } = toggleDialogSuggestionsSlice.actions;
-export const { toggleDialogAddFriendChannel } = toggleDialogAddFriendChannelSlice.actions;
+export const { toggleDialogAddFriendChannel } =
+	toggleDialogAddFriendChannelSlice.actions;
+export const { toggleDialogUpdateInfo } = toggleDialogUpdateInfoSlice.actions;
 
 export default store;
